@@ -48,6 +48,8 @@ dependencies {
 
 	//소셜 로그인
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
 
 tasks.named('test') {
