@@ -23,10 +23,12 @@ public enum BaseResponseStatus {
     INVALID_USER_JWT(false, 2003, "권한이 없는 유저의 접근입니다."),
 
     // users
+    DOUBLE_CHECK_PWD(false, 2009, "비밀번호를 다시 확인해주세요."),
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
     DOUBLE_CHECK_ID(false, 2011, "유저 아이디가 이미 존재합니다."),
     CHECK_QUIT_USER(false, 2022, "이미 탈퇴한 유저입니다."),
-    INVALID_EMAIL(false, 2012, "이미 존재하는 이메일입니다."),
+    INVALID_EMAIL(false, 2012, "유효하지 않은 이메일입니다."),
+    DOUBLE_CHECK_EMAIL(false, 2014, "이미 존재하는 이메일입니다."),
     INVALID_NICKNAME(false, 2013, "이미 존재하는 닉네임입니다."),
 
     // [POST] /users
