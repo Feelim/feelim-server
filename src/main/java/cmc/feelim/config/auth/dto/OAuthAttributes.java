@@ -69,6 +69,7 @@ public class OAuthAttributes {
                 .build();
     }
 
+    /** 나중에 번호 추가 예정 **/
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
         // kakao는 kakao_account에 유저정보가 있다. (name, email, age_range)
         Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
@@ -91,6 +92,7 @@ public class OAuthAttributes {
                 .email(email)
                 .nickname(nickname)
                 .pwd(pwd)
+                .phone(phone)
                 .build();
     }
 }

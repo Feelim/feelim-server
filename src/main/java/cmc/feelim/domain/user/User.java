@@ -12,7 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,19 +32,25 @@ public class User extends BaseEntity {
     private Role role;
 
     @NotNull
+    @Email(message = "이메일 형식에 맞지 않습니다.")
     @Column(length = 45)
     private String email;
 
+    @Column(length = 20)
+    private String phone;
+
+    // 숫자, 특수문자, 영문 중 2가지 이상 사용, 8글자 이상
     @NotNull
+//    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,45}", message = "비밀번호는 숫자, 특수문자, 영문 중 2가지 이상 사용, 8글자 이상 45자 이하로 구성해주세요.")
     @Column(length = 45)
     private String pwd;
 
     @NotNull
-    @Column(length = 15)
+    @Column(length = 8)
     private String nickname;
 
     @NotNull
-    @Column(length = 15)
+    @Column(length = 8)
     private String name;
 
     @Column(length = 100)
@@ -67,12 +75,10 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
     private List<Follow> follows = new ArrayList<>();
 
-    public void createSocialId(String toUpperCase) {
-    }
-
     @Builder
-    public User (String email, String pwd, String nickname, String name) {
+    public User (String email, String phone, String pwd, String nickname, String name) {
         this.email = email;
+        this.phone = phone;
         this.pwd = pwd;
         this.nickname = nickname;
         this.name = name;

@@ -32,9 +32,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         SessionUser sessionMember = (SessionUser) session.getAttribute("user");
         Optional<User> user = userRepository.findByEmail(sessionMember.getEmail());
 
-//        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-//        String token = jwtTokenProvider.generateToken(principal);
-
         String jwt = jwtTokenProvider.createSocialJwt(user.get().getEmail());
         System.out.println(user.get().getId()+"??????????????????????????????????????????????");
         System.out.println(sessionMember.getId()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
