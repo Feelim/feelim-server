@@ -77,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .csrf().disable().authorizeRequests()
                 /** login 없이 접근 허용 하는 url **/
-                .antMatchers("/**").permitAll()
+                .antMatchers("/**").permitAll() //그냥 전부 다 접속 가능하게 함
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 /** admin의 경우 ADMIN 권한이 있는 사용자만 접근 가능 **/
