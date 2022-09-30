@@ -57,5 +57,13 @@ public class PostService {
         return getPostsRes;
     }
 
+    /** 필름 게시판 글 불러오기 **/
+    public List<GetPostsRes> getFilm() {
+        List<Post> posts = postRepository.findByCategory(Category.FILM);
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
 
+        return getPostsRes;
+    }
 }
