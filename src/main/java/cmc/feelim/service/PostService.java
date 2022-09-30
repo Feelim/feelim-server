@@ -87,12 +87,26 @@ public class PostService {
     }
 
     /** 제목 키워드 검색 **/
-    public List<GetPostsRes> findByKeyword(String keyword) throws BaseException {
+    public List<GetPostsRes> findByTitle(String keyword) throws BaseException {
         if(keyword.length() < 2) {
             throw new BaseException(BaseResponseStatus.KEYWORD_TOO_SHORT);
         }
 
         List<Post> posts = postRepository.findByTitleContaining(keyword);
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
+        return getPostsRes;
+    }
+
+    /** 내용 검색 **/
+    public List<GetPostsRes> findByContent(String keyword) throws BaseException {
+
+        if(keyword.length() < 2) {
+            throw new BaseException(BaseResponseStatus.KEYWORD_TOO_SHORT);
+        }
+
+        List<Post> posts = postRepository.findByContentContaining(keyword);
         List<GetPostsRes> getPostsRes = posts.stream()
                 .map(GetPostsRes::new)
                 .collect(Collectors.toList());

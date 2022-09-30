@@ -11,4 +11,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByCategory(Category category);
 
     List<Post> findByTitleContaining(@Param("keyword") String keyword);
+
+    List<Post> findByContentContaining(@Param("keyword") String keyword);
 }
