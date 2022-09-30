@@ -3,11 +3,13 @@ package cmc.feelim.domain.post;
 import cmc.feelim.domain.BaseEntity;
 import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.image.Image;
+import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +30,27 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @NotNull
+    @Column(length = 30)
+    private String title;
+
+    private String content;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+    public Post(PostPostingReq postPostingReq, User user) {
+        this.user = user;
+        this.category = postPostingReq.getCategory();
+        this.title = postPostingReq.getTitle();
+        this.content = postPostingReq.getTitle();
+
+    }
+
+    public void updateImage(List<Image> images) {
+        this.images = images;
+    }
 }
