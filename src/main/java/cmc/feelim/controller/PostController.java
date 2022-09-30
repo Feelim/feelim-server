@@ -58,7 +58,13 @@ public class PostController {
 
     @ApiOperation("제목 검색")
     @GetMapping("/search/title/{keyword}")
-    public BaseResponse<List<GetPostsRes>> searchByKeyword(@PathVariable(name = "keyword") String keyword) throws BaseException {
-        return new BaseResponse<List<GetPostsRes>>(postService.findByKeyword(keyword));
+    public BaseResponse<List<GetPostsRes>> searchByTitle(@PathVariable(name = "keyword") String keyword) throws BaseException {
+        return new BaseResponse<List<GetPostsRes>>(postService.findByTitle(keyword));
+    }
+
+    @ApiOperation("내용 검색")
+    @GetMapping("/search/content/{keyword}")
+    public BaseResponse<List<GetPostsRes>> searchByContent(@PathVariable(name = "keyword") String keyword) throws BaseException {
+        return new BaseResponse<List<GetPostsRes>>(postService.findByContent(keyword));
     }
 }
