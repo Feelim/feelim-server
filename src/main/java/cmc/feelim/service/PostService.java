@@ -1,6 +1,7 @@
 package cmc.feelim.service;
 
 import cmc.feelim.config.exception.BaseException;
+import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.Status;
 import cmc.feelim.domain.post.Category;
@@ -83,5 +84,18 @@ public class PostService {
         Optional<Post> post = postRepository.findById(postId);
         post.get().changeStatus(Status.DELETED);
         return post.get().getId();
+    }
+
+    /** 제목 키워드 검색 **/
+    public List<GetPostsRes> findByKeyword(String keyword) throws BaseException {
+        if(keyword.length() < 2) {
+            throw new BaseException(BaseResponseStatus.KEYWORD_TOO_SHORT);
+        }
+
+        List<Post> posts = postRepository.findByTitleContaining(keyword);
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
+        return getPostsRes;
     }
 }

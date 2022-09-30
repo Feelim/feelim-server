@@ -42,8 +42,8 @@ public enum BaseResponseStatus {
     // products/category
     GET_PRODUCT_CATEGORY_NOT_EXIST(false, 2111, "id값에 해당하는 category가 없습니다"),
 
-    // products/subCategory
-    GET_PRODUCT_SUB_CATEGORY_NOT_EXIST(false, 2121, "id값에 해당하는 subCategory가 없습니다"),
+    // search
+    KEYWORD_TOO_SHORT(false, 2121, "2글자 이상의 검색어를 입력해주세요."),
 
     // carts
     USER_CART_NOT_EXIST(false, 2301, "userId에 해당하는 활성화된 cart가 없습니다"),
