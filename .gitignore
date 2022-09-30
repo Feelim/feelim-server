@@ -15,3 +15,5 @@ gradle-app.setting
 *.jar
 *.bat
 HELP.md
+.idea/uiDesigner.xml
+.idea/compiler.xml
