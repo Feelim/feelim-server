@@ -5,6 +5,7 @@ import cmc.feelim.config.exception.BaseResponse;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.dto.GetPostRes;
 import cmc.feelim.domain.post.dto.GetPostsRes;
+import cmc.feelim.domain.post.dto.PatchPostReq;
 import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.service.PostService;
 import io.swagger.annotations.ApiOperation;
@@ -41,5 +42,11 @@ public class PostController {
     @GetMapping("/{postId}")
     public BaseResponse<GetPostRes> getPost(@PathVariable(name = "postId") Long postId) {
         return new BaseResponse<GetPostRes>(postService.getPost(postId));
+    }
+
+    @ApiOperation("게시물 수정")
+    @PatchMapping("/{postId}")
+    public BaseResponse<Long> updatePost(@PathVariable(name = "postId") Long postId, @ModelAttribute PatchPostReq patchPostReq) {
+        return new BaseResponse<Long>(postService.updatePost(postId, patchPostReq));
     }
 }

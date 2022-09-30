@@ -3,6 +3,7 @@ package cmc.feelim.domain.post;
 import cmc.feelim.domain.BaseEntity;
 import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.image.Image;
+import cmc.feelim.domain.post.dto.PatchPostReq;
 import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
@@ -52,5 +53,10 @@ public class Post extends BaseEntity {
 
     public void updateImage(List<Image> images) {
         this.images = images;
+    }
+
+    public void updatePost(PatchPostReq patchPostReq) {
+        this.title = patchPostReq.getTitle();
+        this.content = patchPostReq.getContent();
     }
 }

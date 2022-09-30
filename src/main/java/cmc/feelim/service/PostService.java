@@ -7,6 +7,7 @@ import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
 import cmc.feelim.domain.post.dto.GetPostRes;
 import cmc.feelim.domain.post.dto.GetPostsRes;
+import cmc.feelim.domain.post.dto.PatchPostReq;
 import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.domain.user.User;
 import lombok.RequiredArgsConstructor;
@@ -63,5 +64,15 @@ public class PostService {
         GetPostRes getPostRes = new GetPostRes(post.get());
 
         return getPostRes;
+    }
+
+    /** 게시물 수정 **/
+    @Transactional
+    public Long updatePost(Long postId, PatchPostReq patchPostReq) {
+        Optional<Post> post = postRepository.findById(postId);
+        post.get().updatePost(patchPostReq);
+        post.get().updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post.get()));
+
+        return post.get().getId();
     }
 }
