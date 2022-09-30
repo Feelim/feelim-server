@@ -5,11 +5,15 @@ import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
+import cmc.feelim.domain.post.dto.GetPostsRes;
 import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,5 +33,15 @@ public class PostService {
         post.updateImage(fileUploadService.uploadImageFromPost(postPostingReq.getImages(), post));
 
         return postRepository.save(post).getId();
+    }
+
+    /** 모든 게시물 불러오기 **/
+    public List<GetPostsRes> getAll() {
+        List<Post> posts = postRepository.findAll();
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
+
+        return getPostsRes;
     }
 }
