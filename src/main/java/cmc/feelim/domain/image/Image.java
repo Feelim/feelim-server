@@ -19,6 +19,10 @@ public class Image extends BaseEntity {
     @Column(name = "image_id")
     private Long id;
 
+    private String originFileName;
+
+    private Long fileSize;
+
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,5 +39,15 @@ public class Image extends BaseEntity {
 
     public Image(String url) {
         this.url = url;
+    }
+
+    public Image(String fileName, String fileUrl, long size) {
+        this.originFileName = fileName;
+        this.url = fileUrl;
+        this.fileSize = size;
+    }
+
+    public void updatePost(Post post) {
+        this.post = post;
     }
 }
