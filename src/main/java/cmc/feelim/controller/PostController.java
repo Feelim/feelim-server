@@ -49,4 +49,10 @@ public class PostController {
     public BaseResponse<Long> updatePost(@PathVariable(name = "postId") Long postId, @ModelAttribute PatchPostReq patchPostReq) {
         return new BaseResponse<Long>(postService.updatePost(postId, patchPostReq));
     }
+
+    @ApiOperation("게시물 삭제")
+    @DeleteMapping("/{postId}")
+    public BaseResponse<Long> deletePost(@PathVariable(name = "postId") Long postId) {
+        return new BaseResponse<Long>(postService.deletePost(postId));
+    }
 }
