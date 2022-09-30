@@ -2,6 +2,7 @@ package cmc.feelim.service;
 
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.s3.S3FileUploadService;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
@@ -73,6 +74,14 @@ public class PostService {
         post.get().updatePost(patchPostReq);
         post.get().updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post.get()));
 
+        return post.get().getId();
+    }
+
+    /** 게시물 삭제 **/
+    @Transactional
+    public Long deletePost(Long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+        post.get().changeStatus(Status.DELETED);
         return post.get().getId();
     }
 }

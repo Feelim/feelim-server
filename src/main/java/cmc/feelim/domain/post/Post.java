@@ -8,6 +8,7 @@ import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@Where(clause = "status='ACTIVE'")
 public class Post extends BaseEntity {
 
     @Id
