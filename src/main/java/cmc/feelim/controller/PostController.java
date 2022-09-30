@@ -17,17 +17,21 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    /** 글 쓰기 **/
     @ApiOperation("새로운 글 작성")
     @PostMapping("/new")
     public BaseResponse<Long> createPosting(@ModelAttribute PostPostingReq postPostingReq) throws BaseException {
         return new BaseResponse<Long>(postService.save(postPostingReq));
     }
 
-    /** 모든 게시판 보기 **/
     @ApiOperation("모든 게시판")
     @GetMapping("")
     public BaseResponse<List<GetPostsRes>> getAll() {
         return new BaseResponse<>(postService.getAll());
+    }
+
+    @ApiOperation("카메라 게시판")
+    @GetMapping("/camera")
+    public BaseResponse<List<GetPostsRes>> getCamera() {
+        return new BaseResponse<>(postService.getCamera());
     }
 }

@@ -1,8 +1,10 @@
 package cmc.feelim.service;
 
+import antlr.collections.impl.LList;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
+import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
 import cmc.feelim.domain.post.dto.GetPostsRes;
@@ -44,4 +46,16 @@ public class PostService {
 
         return getPostsRes;
     }
+
+    /** 카메라 게시판 글 불러오기 **/
+    public List<GetPostsRes> getCamera() {
+        List<Post> posts = postRepository.findByCategory(Category.CAMERA);
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
+
+        return getPostsRes;
+    }
+
+
 }
