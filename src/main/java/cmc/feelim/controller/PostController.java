@@ -3,6 +3,7 @@ package cmc.feelim.controller;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponse;
 import cmc.feelim.domain.post.Category;
+import cmc.feelim.domain.post.dto.GetPostRes;
 import cmc.feelim.domain.post.dto.GetPostsRes;
 import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.service.PostService;
@@ -31,8 +32,14 @@ public class PostController {
     }
 
     @ApiOperation("카테고리별 모든 글 불러오기")
-    @GetMapping("/{category}")
+    @GetMapping("/category/{category}")
     public BaseResponse<List<GetPostsRes>> getByCategory(@PathVariable(name = "category") Category category) {
         return new BaseResponse<List<GetPostsRes>>(postService.getByCategory(category));
+    }
+
+    @ApiOperation("게시물 상세 보기")
+    @GetMapping("/{postId}")
+    public BaseResponse<GetPostRes> getPost(@PathVariable(name = "postId") Long postId) {
+        return new BaseResponse<GetPostRes>(postService.getPost(postId));
     }
 }
