@@ -47,19 +47,9 @@ public class PostService {
         return getPostsRes;
     }
 
-    /** 카메라 게시판 글 불러오기 **/
-    public List<GetPostsRes> getCamera() {
-        List<Post> posts = postRepository.findByCategory(Category.CAMERA);
-        List<GetPostsRes> getPostsRes = posts.stream()
-                .map(GetPostsRes::new)
-                .collect(Collectors.toList());
-
-        return getPostsRes;
-    }
-
-    /** 필름 게시판 글 불러오기 **/
-    public List<GetPostsRes> getFilm() {
-        List<Post> posts = postRepository.findByCategory(Category.FILM);
+    /** 카테고리별 모든 글 불러오기 **/
+    public List<GetPostsRes> getByCategory(Category category) {
+        List<Post> posts = postRepository.findByCategory(category);
         List<GetPostsRes> getPostsRes = posts.stream()
                 .map(GetPostsRes::new)
                 .collect(Collectors.toList());

@@ -2,6 +2,7 @@ package cmc.feelim.controller;
 
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponse;
+import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.dto.GetPostsRes;
 import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.service.PostService;
@@ -29,15 +30,9 @@ public class PostController {
         return new BaseResponse<>(postService.getAll());
     }
 
-    @ApiOperation("카메라 게시판")
-    @GetMapping("/camera")
-    public BaseResponse<List<GetPostsRes>> getCamera() {
-        return new BaseResponse<>(postService.getCamera());
-    }
-
-    @ApiOperation("필름 게시판")
-    @GetMapping("/film")
-    public BaseResponse<List<GetPostsRes>> getFilm() {
-        return new BaseResponse<List<GetPostsRes>>(postService.getFilm());
+    @ApiOperation("카테고리별 모든 글 불러오기")
+    @GetMapping("/{category}")
+    public BaseResponse<List<GetPostsRes>> getByCategory(@PathVariable(name = "category") Category category) {
+        return new BaseResponse<List<GetPostsRes>>(postService.getByCategory(category));
     }
 }
