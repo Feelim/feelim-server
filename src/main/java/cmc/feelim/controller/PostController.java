@@ -34,4 +34,10 @@ public class PostController {
     public BaseResponse<List<GetPostsRes>> getCamera() {
         return new BaseResponse<>(postService.getCamera());
     }
+
+    @ApiOperation("필름 게시판")
+    @GetMapping("/film")
+    public BaseResponse<List<GetPostsRes>> getFilm() {
+        return new BaseResponse<List<GetPostsRes>>(postService.getFilm());
+    }
 }
