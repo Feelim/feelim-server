@@ -104,7 +104,7 @@ public enum BaseResponseStatus {
     DELETION_FAIL_ORDER(false, 4020, "주문취소 실패"),
 
     DELETION_FAIL_Like(false,4030, "찜취소 실패"),
-    NO_EDIT_RIGHTS(false, 4040, "게시물 수정 권한 없음");
+    NO_EDIT_RIGHTS(false, 4040, "수정 권한 없음");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
