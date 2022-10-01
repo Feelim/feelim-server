@@ -1,6 +1,7 @@
 package cmc.feelim.domain.comment;
 
 import cmc.feelim.domain.BaseEntity;
+import cmc.feelim.domain.comment.dto.PatchCommentReq;
 import cmc.feelim.domain.comment.dto.PostCommentReq;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.user.User;
@@ -32,5 +33,9 @@ public class Comment extends BaseEntity {
         this.user = user;
         this.post = post;
         this.content = post.getContent();
+    }
+
+    public void update(PatchCommentReq patchCommentReq) {
+        this.content = patchCommentReq.getContent();
     }
 }
