@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    include: oauth
+
+  datasource:
+    url: jdbc:mysql://studit.cp0whbx3cm7f.ap-northeast-2.rds.amazonaws.com:3306/chalkak?serverTimezone=Asia/Seoul
+    username: root
+    password: minamina
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    generate-ddl: true
+
+  thymeleaf:
+    enabled: false
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+  com.amazonaws.util.EC2MetadataUtils: error
+
+jwt:
+  secret: 'feelim'
+  access-expired: 18000 #30(분) - 단위 (초)
