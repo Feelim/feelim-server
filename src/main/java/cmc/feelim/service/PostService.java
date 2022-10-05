@@ -70,8 +70,14 @@ public class PostService {
 
     /** 게시물 수정 **/
     @Transactional
-    public Long updatePost(Long postId, PatchPostReq patchPostReq) {
+    public Long updatePost(Long postId, PatchPostReq patchPostReq) throws BaseException {
+        User user = authService.getUserFromAuth();
         Optional<Post> post = postRepository.findById(postId);
+
+        if(user != post.get().getUser()) {
+            throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
+        }
+
         post.get().updatePost(patchPostReq);
         post.get().updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post.get()));
 
