@@ -39,8 +39,9 @@ public enum BaseResponseStatus {
     // chat
     CHAT_ROOM_NOT_FOUND(false, 2101, "채팅방이 존재하지 않습니다."),
 
-    // products/category
-    GET_PRODUCT_CATEGORY_NOT_EXIST(false, 2111, "id값에 해당하는 category가 없습니다"),
+    // report
+    ENTER_REASON(false, 2111, "신고 사유를 선택해주세요."),
+    SELECT_POST(false, 2112, "신고할 게시물이 존재하지 않습니다."),
 
     // search
     KEYWORD_TOO_SHORT(false, 2121, "2글자 이상의 검색어를 입력해주세요."),
