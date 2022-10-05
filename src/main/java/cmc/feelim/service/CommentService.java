@@ -2,6 +2,7 @@ package cmc.feelim.service;
 
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.comment.CommentRepository;
 import cmc.feelim.domain.comment.dto.PatchCommentReq;
@@ -42,6 +43,20 @@ public class CommentService {
 
         comment.get().update(patchCommentReq);
 
+        return comment.get().getId();
+    }
+
+    /** 댓글 삭제하기 **/
+    @Transactional
+    public Long delete(Long commentId) throws BaseException {
+        User user = authService.getUserFromAuth();
+        Optional<Comment> comment = commentRepository.findById(commentId);
+
+        if(user != comment.get().getUser()) {
+            throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
+        }
+
+        comment.get().changeStatus(Status.DELETED);
         return comment.get().getId();
     }
 }
