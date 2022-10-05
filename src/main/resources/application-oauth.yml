@@ -7,7 +7,7 @@ spring:
             #client-id == REST api KEY
             client-id: 3383a153d79fbb4075a916ac3c642dc2
             client-secret: WpfHf9q7u6LckFpzHy50sN8o0xDNY4Cx
-            redirect-uri: "http://localhost:8080/{action}/oauth2/code/{registrationId}"
+            redirect-uri: "http://chalkak-env-1.eba-rbm59tk3.ap-northeast-2.elasticbeanstalk.com/{action}/oauth2/code/{registrationId}"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope: profile_nickname, account_email
