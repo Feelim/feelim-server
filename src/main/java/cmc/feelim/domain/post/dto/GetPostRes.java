@@ -3,6 +3,7 @@ package cmc.feelim.domain.post.dto;
 import cmc.feelim.domain.comment.dto.GetCommentRes;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class GetPostRes {
     private String nickname;
     private String title;
     private String content;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
     private List<String> images = new ArrayList<>();
     private List<GetCommentRes> comment;

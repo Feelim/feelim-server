@@ -82,5 +82,6 @@ public class User extends BaseEntity {
         this.pwd = pwd;
         this.nickname = nickname;
         this.name = name;
+        this.role = Role.USER;
     }
 }
