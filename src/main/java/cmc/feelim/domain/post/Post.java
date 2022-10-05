@@ -5,6 +5,7 @@ import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.post.dto.PatchPostReq;
 import cmc.feelim.domain.post.dto.PostPostingReq;
+import cmc.feelim.domain.report.Report;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,12 +46,14 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Report> reports = new ArrayList<>();
+
     public Post(PostPostingReq postPostingReq, User user) {
         this.user = user;
         this.category = postPostingReq.getCategory();
         this.title = postPostingReq.getTitle();
         this.content = postPostingReq.getTitle();
-
     }
 
     public void updateImage(List<Image> images) {
