@@ -2,6 +2,7 @@ package cmc.feelim.config.s3;
 
 import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.image.ImageRepository;
+import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.post.Post;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -42,6 +43,30 @@ public class S3FileUploadService {
 
             Image image = new Image(fileName, s3Service.getFileUrl(fileName), multipartFile.getSize());
             image.updatePost(post);
+            imageRepository.save(image);
+            imageList.add(image);
+        }
+        return imageList;
+    }
+
+    public List<Image> uploadImageFromLaboratory(List<MultipartFile> files, ProcessingLaboratory laboratory){
+        //반환값
+        List<Image> imageList = new ArrayList<>();
+
+        for(MultipartFile multipartFile : files) {
+
+            String fileName = laboratory.getName() + "/" + createFileName(multipartFile.getOriginalFilename());
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(multipartFile.getSize());
+            objectMetadata.setContentType(multipartFile.getContentType());
+            try (InputStream inputStream = multipartFile.getInputStream()) {
+                s3Service.uploadFile(inputStream, objectMetadata, fileName);
+            } catch (IOException e) {
+                throw new IllegalArgumentException(String.format("파일 변환 중 오류 발생 ($s)", multipartFile.getOriginalFilename()));
+            }
+
+            Image image = new Image(fileName, s3Service.getFileUrl(fileName), multipartFile.getSize());
+            image.updateLaboratory(laboratory);
             imageRepository.save(image);
             imageList.add(image);
         }
