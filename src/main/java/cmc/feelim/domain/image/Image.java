@@ -3,6 +3,7 @@ package cmc.feelim.domain.image;
 import cmc.feelim.domain.BaseEntity;
 import cmc.feelim.domain.archive.Archive;
 import cmc.feelim.domain.film.Film;
+import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,10 @@ public class Image extends BaseEntity {
     private Film film;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "processing_laboratory_id")
+    private ProcessingLaboratory laboratory;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "archive_id")
     private Archive archive;
 
@@ -49,5 +54,8 @@ public class Image extends BaseEntity {
 
     public void updatePost(Post post) {
         this.post = post;
+    }
+    public void updateLaboratory(ProcessingLaboratory laboratory) {
+        this.laboratory = laboratory;
     }
 }
