@@ -4,6 +4,7 @@ import cmc.feelim.domain.Address;
 import cmc.feelim.domain.BaseEntity;
 import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.laboratory.dto.PostLaboratoryReq;
+import cmc.feelim.domain.order.Order;
 import cmc.feelim.domain.review.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,9 @@ public class ProcessingLaboratory extends BaseEntity {
 
     @OneToMany(mappedBy = "laboratory", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "laboratory", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
     public ProcessingLaboratory(PostLaboratoryReq postLaboratoryReq) {
         this.name = postLaboratoryReq.getName();
