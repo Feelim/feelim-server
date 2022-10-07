@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import static cmc.feelim.config.exception.BaseResponseStatus.SUCCESS;
@@ -25,10 +26,10 @@ public class BaseResponse<T> {
     private LinkedList message;
 
     // validation 실패
-    public BaseResponse(LinkedList errorList){
+    public BaseResponse(LinkedList<LinkedHashMap<String,String>> errorList){
         this.isSuccess = false;
         this.code = 2090;
-        this.message =  errorList;
+        this.message = (LinkedList<T>) errorList;
     }
 
     // 요청에 실패한 경우
