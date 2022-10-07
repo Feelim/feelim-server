@@ -46,14 +46,15 @@ public enum BaseResponseStatus {
     // search
     KEYWORD_TOO_SHORT(false, 2121, "2글자 이상의 검색어를 입력해주세요."),
 
-    // carts
-    USER_CART_NOT_EXIST(false, 2301, "userId에 해당하는 활성화된 cart가 없습니다"),
+    // laboratory
+    NO_LABORATORY(false, 2301, "laboratoryId에 해당하는 현상소가 존재하지 않습니다."),
 
     // deliveryInfo
     PATCH_DELIVERYINFO_IS_DEFAULT_ADDRESS(false, 2030, "기본배송지는 삭제되지않습니다"),
 
     // Order
     PATCH_CANCEL_ORDER_CHECK_STATUS(false, 2040, "배송중에는 취소할 수 없습니다."),
+    ENTER_INFO(false, 2041, "상세 정보를 입력해주세요."),
 
     //Like
     POST_LIKE_EXISTS(false, 2050, "이미 찜이 되어있습니다."),
