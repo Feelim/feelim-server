@@ -1,17 +1,19 @@
 package cmc.feelim.service;
 
+import cmc.feelim.config.exception.BaseException;
+import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.laboratory.LaboratoryRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.laboratory.dto.GetLaboratoriesRes;
+import cmc.feelim.domain.laboratory.dto.GetLaboratoryRes;
 import cmc.feelim.domain.laboratory.dto.PostLaboratoryReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,5 +46,18 @@ public class LaboratoryService {
                 .collect(Collectors.toList());
 
         return getLaboratoriesRes;
+    }
+
+    /** 현상소 상세 보기 **/
+    public GetLaboratoryRes getOne(Long laboratoryId) throws BaseException {
+
+        Optional<ProcessingLaboratory> laboratory = laboratoryRepository.findById(laboratoryId);
+
+        if(!laboratory.isPresent()) {
+            throw new BaseException(BaseResponseStatus.NO_LABORATORY);
+        }
+
+        GetLaboratoryRes getLaboratoryRes = new GetLaboratoryRes(laboratory.get());
+        return getLaboratoryRes;
     }
 }
