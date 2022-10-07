@@ -8,6 +8,7 @@ import cmc.feelim.domain.follow.Follow;
 import cmc.feelim.domain.likes.Likes;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.report.Report;
+import cmc.feelim.domain.review.Review;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -79,6 +80,9 @@ public class User extends BaseEntity {
     //내가 신고한 게시물
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews= new ArrayList<>();
 
     @Builder
     public User (String email, String phone, String pwd, String nickname, String name) {
