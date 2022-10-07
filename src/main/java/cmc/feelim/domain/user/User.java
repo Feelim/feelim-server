@@ -6,6 +6,7 @@ import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.film.Film;
 import cmc.feelim.domain.follow.Follow;
 import cmc.feelim.domain.likes.Likes;
+import cmc.feelim.domain.order.Order;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.report.Report;
 import cmc.feelim.domain.review.Review;
@@ -83,6 +84,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviews= new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
     @Builder
     public User (String email, String phone, String pwd, String nickname, String name) {
