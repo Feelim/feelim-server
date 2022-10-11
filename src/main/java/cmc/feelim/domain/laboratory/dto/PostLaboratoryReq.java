@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Embedded;
-import java.awt.*;
 import java.util.List;
 
 @Getter
@@ -20,9 +19,15 @@ public class PostLaboratoryReq {
 
     private String homepage;
 
-    private Address address;
+    private String province;
 
-    private Point point;
+    private String city;
+
+    private String street;
+
+    private double x;
+
+    private double y;
 
     private List<MultipartFile> bills;
 }
