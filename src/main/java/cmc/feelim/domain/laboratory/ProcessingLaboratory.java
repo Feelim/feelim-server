@@ -6,13 +6,15 @@ import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.laboratory.dto.PostLaboratoryReq;
 import cmc.feelim.domain.order.Order;
 import cmc.feelim.domain.review.Review;
+import cmc.feelim.utils.GeomUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,7 @@ public class ProcessingLaboratory extends BaseEntity {
 
     //위도, 경도
     @NotNull
+    @Column(columnDefinition = "blob")
     private Point point;
 
     @OneToMany(mappedBy = "laboratory", cascade = CascadeType.ALL)
@@ -57,8 +60,8 @@ public class ProcessingLaboratory extends BaseEntity {
         this.introduction = postLaboratoryReq.getIntroduction();
         this.phone = postLaboratoryReq.getPhone();
         this.homepage = postLaboratoryReq.getHomepage();
-        this.address = postLaboratoryReq.getAddress();
-        this.point = postLaboratoryReq.getPoint();
+        this.address = new Address(postLaboratoryReq.getProvince(), postLaboratoryReq.getCity(), postLaboratoryReq.getStreet());
+        this.point = GeomUtil.createPoint(postLaboratoryReq.getX(), postLaboratoryReq.getY());
     }
 
     public void updateImage(List<Image> images) {
