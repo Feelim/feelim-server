@@ -7,8 +7,11 @@ import cmc.feelim.domain.laboratory.dto.PostLaboratoryReq;
 import cmc.feelim.domain.order.Order;
 import cmc.feelim.domain.review.Review;
 import cmc.feelim.utils.GeomUtil;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 import org.locationtech.jts.geom.Point;
@@ -44,6 +47,7 @@ public class ProcessingLaboratory extends BaseEntity {
     //위도, 경도
     @NotNull
     @Column(columnDefinition = "blob")
+    @JsonManagedReference
     private Point point;
 
     @OneToMany(mappedBy = "laboratory", cascade = CascadeType.ALL)
