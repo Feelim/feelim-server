@@ -15,11 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import javax.validation.constraints.Email;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)

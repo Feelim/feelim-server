@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.util.List;
 
 @RestController
@@ -22,6 +23,7 @@ public class LaboratoryController {
     @ApiOperation("현상소 추가")
     @PostMapping(value = "/new", consumes = {"multipart/form-data"})
     public BaseResponse<Long> create(@ModelAttribute PostLaboratoryReq postLaboratoryReq) throws BaseException {
+        System.out.println(postLaboratoryReq.getCity() + " controller !!!!!!!!!!!!!!!!!1");
         return new BaseResponse<Long>(laboratoryService.save(postLaboratoryReq));
     }
 
@@ -35,6 +37,12 @@ public class LaboratoryController {
     @GetMapping("/{laboratoryId}")
     public BaseResponse<GetLaboratoryRes> getOne(@PathVariable Long laboratoryId) throws BaseException {
         return new BaseResponse<GetLaboratoryRes>(laboratoryService.getOne(laboratoryId));
+    }
+
+    @ApiOperation("주변 현상소 검색")
+    @GetMapping("/nearby")
+    public BaseResponse<List<GetLaboratoriesRes>> getByDistance(@RequestParam double x, double y) throws BaseException {
+        return new BaseResponse<>(laboratoryService.findByDistance(x, y));
     }
 
 }
