@@ -63,4 +63,8 @@ public class Image extends BaseEntity {
     public void updateLaboratory(ProcessingLaboratory laboratory) {
         this.laboratory = laboratory;
     }
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
 }

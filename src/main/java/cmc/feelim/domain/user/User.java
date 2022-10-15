@@ -11,6 +11,7 @@ import cmc.feelim.domain.order.Order;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.report.Report;
 import cmc.feelim.domain.review.Review;
+import cmc.feelim.domain.user.dto.PatchProfileReq;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -100,5 +101,14 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.name = name;
         this.role = Role.USER;
+    }
+
+    public void updateProfile(PatchProfileReq patchProfileReq) {
+        this.nickname = patchProfileReq.getNickname();
+        this.introduction = patchProfileReq.getIntroduction();
+    }
+
+    public void updateImage(Image image) {
+        images.add(image);
     }
 }
