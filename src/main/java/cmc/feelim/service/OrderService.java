@@ -8,6 +8,7 @@ import cmc.feelim.domain.laboratory.LaboratoryRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.order.Order;
 import cmc.feelim.domain.order.OrderRepository;
+import cmc.feelim.domain.order.dto.GetOrdersRes;
 import cmc.feelim.domain.order.dto.PostOrderReq;
 import cmc.feelim.domain.user.User;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,5 +46,14 @@ public class OrderService {
         return orderRepository.save(order).getId();
     }
 
+    /** 현상 신청 리스트 **/
+    public List<GetOrdersRes> getAll() throws BaseException {
+        User user = authService.getUserFromAuth();
+        List<Order> orders = orderRepository.findByUser(user);
+        List<GetOrdersRes> getOrdersRes = orders.stream()
+                .map(GetOrdersRes::new)
+                .collect(Collectors.toList());
 
+        return getOrdersRes;
+    }
 }
