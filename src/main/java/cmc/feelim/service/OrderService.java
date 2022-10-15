@@ -1,16 +1,16 @@
 package cmc.feelim.service;
 
 import cmc.feelim.config.exception.BaseException;
-import cmc.feelim.config.exception.BaseResponse;
 import cmc.feelim.config.exception.BaseResponseStatus;
-import cmc.feelim.config.exception.RefineError;
 import cmc.feelim.domain.laboratory.LaboratoryRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.order.Order;
 import cmc.feelim.domain.order.OrderRepository;
+import cmc.feelim.domain.order.dto.GetOrderRes;
 import cmc.feelim.domain.order.dto.GetOrdersRes;
 import cmc.feelim.domain.order.dto.PostOrderReq;
 import cmc.feelim.domain.user.User;
+import cmc.feelim.domain.user.dto.PatchProfileReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,5 +55,18 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         return getOrdersRes;
+    }
+
+    /** 현상 신청 상세 내역 보기 **/
+    public GetOrderRes getOrder(Long orderId) throws BaseException {
+        User user = authService.getUserFromAuth();
+        Optional<Order> order = orderRepository.findById(orderId);
+
+        if(order.get().getUser() != user) {
+            throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
+        }
+
+        GetOrderRes getOrderRes = new GetOrderRes(order.get());
+        return getOrderRes;
     }
 }

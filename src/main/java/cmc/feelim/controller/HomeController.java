@@ -4,6 +4,7 @@ package cmc.feelim.controller;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponse;
 import cmc.feelim.config.exception.RefineError;
+import cmc.feelim.domain.order.dto.GetOrderRes;
 import cmc.feelim.domain.order.dto.GetOrdersRes;
 import cmc.feelim.domain.user.dto.GetProfileRes;
 import cmc.feelim.domain.user.dto.PatchProfileReq;
@@ -47,5 +48,11 @@ public class HomeController {
     @GetMapping("/order-sheets")
     public BaseResponse<List<GetOrdersRes>> getOrders() throws BaseException {
         return new BaseResponse<List<GetOrdersRes>>(orderService.getAll());
+    }
+
+    @ApiOperation("신청 상세 내역")
+    @GetMapping("/order-sheets/{orderId}")
+    public BaseResponse<GetOrderRes> getOrder(@PathVariable Long orderId) throws BaseException {
+        return new BaseResponse<GetOrderRes>(orderService.getOrder(orderId));
     }
 }
