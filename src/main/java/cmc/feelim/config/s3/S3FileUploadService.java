@@ -4,6 +4,7 @@ import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.image.ImageRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.post.Post;
+import cmc.feelim.domain.user.User;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
@@ -108,5 +109,22 @@ public class S3FileUploadService {
         } catch(StringIndexOutOfBoundsException e){
             throw new IllegalArgumentException(String.format("잘못된 형식의 파일 (%s) 입니다.", fileName));
         }
+    }
+
+    public Image uploadImageFromUser(MultipartFile profile, User user) {
+        String fileName = "profile/" + createFileName(profile.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(profile.getSize());
+        objectMetadata.setContentType(profile.getContentType());
+        try (InputStream inputStream = profile.getInputStream()) {
+            s3Service.uploadFile(inputStream, objectMetadata, fileName);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(String.format("파일 변환 중 오류 발생 ($s)", profile.getOriginalFilename()));
+        }
+
+        Image image = new Image(fileName, s3Service.getFileUrl(fileName), profile.getSize());
+        image.updateUser(user);
+        imageRepository.save(image);
+        return image;
     }
 }
