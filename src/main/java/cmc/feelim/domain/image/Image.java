@@ -5,6 +5,7 @@ import cmc.feelim.domain.archive.Archive;
 import cmc.feelim.domain.film.Film;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.post.Post;
+import cmc.feelim.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,6 +43,10 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Image(String url) {
         this.url = url;
     }
@@ -57,5 +62,9 @@ public class Image extends BaseEntity {
     }
     public void updateLaboratory(ProcessingLaboratory laboratory) {
         this.laboratory = laboratory;
+    }
+
+    public void updateUser(User user) {
+        this.user = user;
     }
 }
