@@ -26,6 +26,8 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String name;
+
     private String phone;
 
     @Email
@@ -48,6 +50,7 @@ public class Order extends BaseEntity {
 
     public Order(User user, ProcessingLaboratory laboratory, PostOrderReq postOrderReq) {
         this.user = user;
+        this.name = postOrderReq.getName();
         this.laboratory = laboratory;
         this.phone = postOrderReq.getPhone();
         this.email = postOrderReq.getEmail();
