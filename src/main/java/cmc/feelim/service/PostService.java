@@ -35,7 +35,10 @@ public class PostService {
         User user = authService.getUserFromAuth();
 
         Post post = new Post(postPostingReq, user);
-        post.updateImage(fileUploadService.uploadImageFromPost(postPostingReq.getImages(), post));
+
+        if(postPostingReq.getImages() != null) {
+            post.updateImage(fileUploadService.uploadImageFromPost(postPostingReq.getImages(), post));
+        }
 
         return postRepository.save(post).getId();
     }
