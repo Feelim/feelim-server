@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 public class GetCommentRes {
     private Long id;
+    private Long userId;
+    private String picture;
     private String nickname;
     private String content;
 
@@ -22,8 +24,15 @@ public class GetCommentRes {
 
     public GetCommentRes(Comment comment) {
         this.id = comment.getId();
+        this.userId = comment.getUser().getId();
         this.nickname = comment.getUser().getNickname();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
+
+        int index = comment.getUser().getImages().size() - 1;
+
+        if(comment.getUser().getImages() != null) {
+            this.picture = comment.getUser().getImages().get(index).getUrl();
+        }
     }
 }

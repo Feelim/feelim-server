@@ -43,8 +43,9 @@ public enum BaseResponseStatus {
     ENTER_REASON(false, 2111, "신고 사유를 선택해주세요."),
     SELECT_POST(false, 2112, "신고할 게시물이 존재하지 않습니다."),
 
-    // search
+    // post
     KEYWORD_TOO_SHORT(false, 2121, "2글자 이상의 검색어를 입력해주세요."),
+    CHECK_POST_ID(false, 2022, "존재하지 않는 게시물입니다."),
 
     // laboratory
     NO_LABORATORY(false, 2301, "laboratoryId에 해당하는 현상소가 존재하지 않습니다."),
