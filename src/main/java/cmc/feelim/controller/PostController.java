@@ -67,4 +67,10 @@ public class PostController {
     public BaseResponse<List<GetPostsRes>> searchByContent(@PathVariable(name = "keyword") String keyword) throws BaseException {
         return new BaseResponse<List<GetPostsRes>>(postService.findByContent(keyword));
     }
+
+    @ApiOperation("내가 작성한 게시물 보기")
+    @GetMapping("/my-post")
+    public BaseResponse<List<GetPostsRes>> getMyPost() throws BaseException {
+        return new BaseResponse<List<GetPostsRes>>(postService.getMyPost());
+    }
 }
