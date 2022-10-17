@@ -4,6 +4,7 @@ import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.Status;
+import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -137,6 +139,22 @@ public class PostService {
     public List<GetPostsRes> getMyPost() throws BaseException {
         User user = authService.getUserFromAuth();
         List<Post> posts = postRepository.findByUser(user);
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
+
+        return getPostsRes;
+    }
+
+    /** 내가 댓글 단 게시물 불러오기 **/
+    public List<GetPostsRes> getCommentedOnPosts() throws BaseException {
+        User user = authService.getUserFromAuth();
+        List<Post> posts = new ArrayList<>();
+
+        for(Comment comment : user.getComments()) {
+            posts.add(comment.getPost());
+        }
+
         List<GetPostsRes> getPostsRes = posts.stream()
                 .map(GetPostsRes::new)
                 .collect(Collectors.toList());

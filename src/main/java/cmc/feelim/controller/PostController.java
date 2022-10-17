@@ -79,7 +79,13 @@ public class PostController {
 
     @ApiOperation("내가 작성한 게시물 보기")
     @GetMapping("/my-post")
-    public BaseResponse<List<GetPostsRes>> getMyPost() throws BaseException {
+    public BaseResponse<List<GetPostsRes>> getMyPosts() throws BaseException {
         return new BaseResponse<List<GetPostsRes>>(postService.getMyPost());
+    }
+
+    @ApiOperation("내가 댓글 단 게시물 보기")
+    @GetMapping("/user/commenting")
+    public BaseResponse<List<GetPostsRes>> getMyCommentingPosts() throws BaseException {
+        return new BaseResponse<List<GetPostsRes>>(postService.getCommentedOnPosts());
     }
 }
