@@ -1,5 +1,6 @@
 package cmc.feelim.domain.post;
 
+import cmc.feelim.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByTitleContaining(@Param("keyword") String keyword);
 
     List<Post> findByContentContaining(@Param("keyword") String keyword);
+
+    List<Post> findByUser(User user);
 }

@@ -4,6 +4,7 @@ import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.Status;
+import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +37,10 @@ public class PostService {
         User user = authService.getUserFromAuth();
 
         Post post = new Post(postPostingReq, user);
-        post.updateImage(fileUploadService.uploadImageFromPost(postPostingReq.getImages(), post));
+
+        if(postPostingReq.getImages() != null) {
+            post.updateImage(fileUploadService.uploadImageFromPost(postPostingReq.getImages(), post));
+        }
 
         return postRepository.save(post).getId();
     }
@@ -61,8 +66,13 @@ public class PostService {
     }
 
     /** 게시물 상세 보기 **/
-    public GetPostRes getPost(Long postId) {
+    public GetPostRes getPost(Long postId) throws BaseException {
         Optional<Post> post = postRepository.findById(postId);
+
+        if(!post.isPresent()) {
+            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
+        }
+
         GetPostRes getPostRes = new GetPostRes(post.get());
 
         return getPostRes;
@@ -86,8 +96,14 @@ public class PostService {
 
     /** 게시물 삭제 **/
     @Transactional
-    public Long deletePost(Long postId) {
+    public Long deletePost(Long postId) throws BaseException {
         Optional<Post> post = postRepository.findById(postId);
+        User user = authService.getUserFromAuth();
+
+        if(user != post.get().getUser()) {
+            throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
+        }
+
         post.get().changeStatus(Status.DELETED);
         return post.get().getId();
     }
@@ -116,6 +132,33 @@ public class PostService {
         List<GetPostsRes> getPostsRes = posts.stream()
                 .map(GetPostsRes::new)
                 .collect(Collectors.toList());
+        return getPostsRes;
+    }
+
+    /** 내가 작성한 게시물 보기 **/
+    public List<GetPostsRes> getMyPost() throws BaseException {
+        User user = authService.getUserFromAuth();
+        List<Post> posts = postRepository.findByUser(user);
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
+
+        return getPostsRes;
+    }
+
+    /** 내가 댓글 단 게시물 불러오기 **/
+    public List<GetPostsRes> getCommentedOnPosts() throws BaseException {
+        User user = authService.getUserFromAuth();
+        List<Post> posts = new ArrayList<>();
+
+        for(Comment comment : user.getComments()) {
+            posts.add(comment.getPost());
+        }
+
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
+
         return getPostsRes;
     }
 }
