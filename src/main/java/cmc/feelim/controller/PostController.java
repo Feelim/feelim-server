@@ -2,6 +2,7 @@ package cmc.feelim.controller;
 
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponse;
+import cmc.feelim.config.exception.RefineError;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.dto.GetPostRes;
 import cmc.feelim.domain.post.dto.GetPostsRes;
@@ -10,8 +11,11 @@ import cmc.feelim.domain.post.dto.PostPostingReq;
 import cmc.feelim.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -22,7 +26,12 @@ public class PostController {
 
     @ApiOperation("새로운 글 작성")
     @PostMapping("/new")
-    public BaseResponse<Long> createPosting(@ModelAttribute PostPostingReq postPostingReq) throws BaseException {
+    public BaseResponse<Long> createPosting(@ModelAttribute @Validated PostPostingReq postPostingReq, Errors errors) throws BaseException, ConstraintViolationException {
+
+        if(errors.hasErrors()) {
+            return new BaseResponse<>(RefineError.refine(errors));
+        }
+
         return new BaseResponse<Long>(postService.save(postPostingReq));
     }
 
