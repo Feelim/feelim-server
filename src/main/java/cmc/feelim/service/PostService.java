@@ -89,8 +89,14 @@ public class PostService {
 
     /** 게시물 삭제 **/
     @Transactional
-    public Long deletePost(Long postId) {
+    public Long deletePost(Long postId) throws BaseException {
         Optional<Post> post = postRepository.findById(postId);
+        User user = authService.getUserFromAuth();
+
+        if(user != post.get().getUser()) {
+            throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
+        }
+
         post.get().changeStatus(Status.DELETED);
         return post.get().getId();
     }
