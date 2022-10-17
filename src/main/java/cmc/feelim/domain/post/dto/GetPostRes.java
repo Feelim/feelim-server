@@ -3,6 +3,7 @@ package cmc.feelim.domain.post.dto;
 import cmc.feelim.domain.comment.dto.GetCommentRes;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
+import cmc.feelim.domain.user.dto.WriterDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,8 @@ import java.util.stream.Collectors;
 public class GetPostRes {
     private Long id;
     private Category category;
-    private String nickname;
+
+    private WriterDto writer;
     private String title;
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -28,7 +30,7 @@ public class GetPostRes {
     public GetPostRes(Post post) {
         this.id = post.getId();
         this.category = post.getCategory();
-        this.nickname = post.getUser().getNickname();
+        this.writer = new WriterDto(post.getUser());
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
