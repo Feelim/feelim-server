@@ -121,4 +121,15 @@ public class PostService {
                 .collect(Collectors.toList());
         return getPostsRes;
     }
+
+    /** 내가 작성한 게시물 보기 **/
+    public List<GetPostsRes> getMyPost() throws BaseException {
+        User user = authService.getUserFromAuth();
+        List<Post> posts = postRepository.findByUser(user);
+        List<GetPostsRes> getPostsRes = posts.stream()
+                .map(GetPostsRes::new)
+                .collect(Collectors.toList());
+
+        return getPostsRes;
+    }
 }
