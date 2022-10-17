@@ -64,8 +64,13 @@ public class PostService {
     }
 
     /** 게시물 상세 보기 **/
-    public GetPostRes getPost(Long postId) {
+    public GetPostRes getPost(Long postId) throws BaseException {
         Optional<Post> post = postRepository.findById(postId);
+
+        if(!post.isPresent()) {
+            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
+        }
+
         GetPostRes getPostRes = new GetPostRes(post.get());
 
         return getPostRes;
