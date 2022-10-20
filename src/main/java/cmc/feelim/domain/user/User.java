@@ -61,6 +61,9 @@ public class User extends BaseEntity {
     @Column(length = 100)
     private String introduction;
 
+    @Column(nullable = true, unique = true)
+    private String fcmToken;
+
     @OneToMany
     private List<Image> images = new ArrayList<>();
 
@@ -110,5 +113,9 @@ public class User extends BaseEntity {
 
     public void updateImage(Image image) {
         images.add(image);
+    }
+
+    public void addFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }
