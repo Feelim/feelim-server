@@ -58,6 +58,10 @@ dependencies {
 
 	//point
 	implementation group: 'org.locationtech.jts', name: 'jts-core', version: '1.16.1'
+
+	//fcm
+	implementation 'com.google.firebase:firebase-admin:9.0.0'
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
 }
 
 tasks.named('test') {
