@@ -84,13 +84,18 @@ public class PostService {
         User user = authService.getUserFromAuth();
         Optional<Post> post = postRepository.findById(postId);
 
+        if(!post.isPresent()) {
+            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
+        }
+
         if(user != post.get().getUser()) {
             throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
         }
 
-        post.get().updatePost(patchPostReq);
-        post.get().updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post.get()));
-
+        if(patchPostReq.getImages() != null) {
+            post.get().updatePost(patchPostReq);
+            post.get().updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post.get()));
+        }
         return post.get().getId();
     }
 
@@ -99,6 +104,10 @@ public class PostService {
     public Long deletePost(Long postId) throws BaseException {
         Optional<Post> post = postRepository.findById(postId);
         User user = authService.getUserFromAuth();
+
+        if(!post.isPresent()) {
+            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
+        }
 
         if(user != post.get().getUser()) {
             throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
