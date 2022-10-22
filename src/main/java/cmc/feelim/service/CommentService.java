@@ -7,12 +7,15 @@ import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.comment.CommentRepository;
 import cmc.feelim.domain.comment.dto.PatchCommentReq;
 import cmc.feelim.domain.comment.dto.PostCommentReq;
+import cmc.feelim.domain.notification.NotificationType;
+import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
 import cmc.feelim.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -22,12 +25,28 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final AuthService authService;
     private final PostRepository postRepository;
+    private final FCMService fcmService;
 
     /** 댓글 달기 **/
     @Transactional
-    public Long save(Long postId, PostCommentReq postCommentReq) throws BaseException {
+    public Long save(Long postId, PostCommentReq postCommentReq) throws BaseException, IOException {
         User user = authService.getUserFromAuth();
-        Comment comment = new Comment(user, postRepository.findById(postId).get(), postCommentReq);
+
+        Optional<Post> post = postRepository.findById(postId);
+
+        if(!post.isPresent()) {
+            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
+        }
+
+        Comment comment = new Comment(user, post.get(), postCommentReq);
+
+        String title = post.get().getTitle().length() > 6 ? post.get().getTitle().substring(0, 7) : post.get().getTitle();
+        String content = (post.get().getContent().length() > 14 ) ? post.get().getContent().substring(0,15) : post.get().getContent();
+
+        fcmService.sendMessageToUser(title + "..." + NotificationType.COMMENT.getMessage(),
+                content + "...",
+                post.get().getUser());
+
         return commentRepository.save(comment).getId();
     }
 

@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/post/{postId}/comment")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class CommentController {
 
     @ApiOperation("댓글 달기")
     @PostMapping("/new")
-    public BaseResponse<Long> createComment(@PathVariable(name = "postId") Long postId, @RequestBody PostCommentReq postCommentReq) throws BaseException {
+    public BaseResponse<Long> createComment(@PathVariable(name = "postId") Long postId, @RequestBody PostCommentReq postCommentReq) throws BaseException, IOException {
         return new BaseResponse<Long>(commentService.save(postId, postCommentReq));
     }
 
