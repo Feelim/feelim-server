@@ -30,12 +30,12 @@ public class FCMController {
         return new BaseResponse<Long>(user.getId());
     }
 
-    @ApiOperation("첫번째 유저에게 테스트")
-    @GetMapping("/test")
-    public String tokenTest() throws IOException {
+//    @ApiOperation("첫번째 유저에게 테스트")
+//    @GetMapping("/test")
+//    public String tokenTest() throws IOException {
         // String testToken = "fpO9B9HkQs-5nUrb0t-2de:APA91bHSK_JgiUJDL4re0dSfEyVAgNwp7C6Cugc05vUoXxg3WiHv6fubih7_czuJggVq6Yl4DUwwQIlzvz2qkVHh7IGPwQnQprd6ZN-6MXmo1jfogRX1t4WQK5ABmT-XaKOkVw_Wa39q";
-        fcmService.sendMessageToUser("첫번째유저에게가는테스트입니다","테스트메시지",1L);
-        return "itistest";
-    }
+//        fcmService.sendMessageToUser("첫번째유저에게가는테스트입니다","테스트메시지",1L);
+//        return "itistest";
+//    }
 
 }

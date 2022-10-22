@@ -41,14 +41,14 @@ public class FCMService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void sendMessageToUser(String infoMesseage, String bodyMessage, Long targetUserId) throws IOException {
+    public void sendMessageToUser(String infoMessage, String bodyMessage, User user) throws IOException {
 
-        User user = userRepository.findById(targetUserId)
-                .orElseThrow(NoSuchElementException::new);
-
-        String info = user.getNickname() + "님, " + infoMesseage;
+        String info = user.getNickname() + "님, " + infoMessage;
 
         String message = makeMessage(user.getFcmToken(), info, bodyMessage);
+
+        System.out.println(message);
+
         setBuild(message);
 
     }
