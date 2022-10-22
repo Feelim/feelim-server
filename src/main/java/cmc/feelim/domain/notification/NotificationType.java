@@ -1,5 +1,8 @@
 package cmc.feelim.domain.notification;
 
+import lombok.Getter;
+
+@Getter
 public enum NotificationType {
     COMMENT("에 새로운 댓글이 달렸어요!"),
     ANSWER("질문에 새로운 답변이 달렸어요!"),
