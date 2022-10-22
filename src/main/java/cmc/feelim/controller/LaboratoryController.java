@@ -45,4 +45,10 @@ public class LaboratoryController {
         return new BaseResponse<>(laboratoryService.findByDistance(x, y));
     }
 
+    @ApiOperation("현상소 검색")
+    @GetMapping("/search")
+    public BaseResponse<List<GetLaboratoriesRes>> getByName(@RequestParam("keyword") String keyword) throws BaseException {
+        return new BaseResponse<List<GetLaboratoriesRes>>(laboratoryService.search(keyword));
+    }
+
 }
