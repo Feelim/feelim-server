@@ -53,7 +53,7 @@ public class Post extends BaseEntity {
         this.user = user;
         this.category = postPostingReq.getCategory();
         this.title = postPostingReq.getTitle();
-        this.content = postPostingReq.getTitle();
+        this.content = postPostingReq.getContent();
     }
 
     public void updateImage(List<Image> images) {
