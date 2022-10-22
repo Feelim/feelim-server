@@ -1,5 +1,6 @@
 package cmc.feelim.domain.laboratory.dto;
 
+import cmc.feelim.domain.Address;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.review.dto.GetReviewRes;
 import lombok.Getter;
@@ -15,6 +16,7 @@ public class GetLaboratoryRes {
     private Long id;
     private String name;
     private String introduction;
+    private Address address;
     private String phone;
     private List<String> bills = new ArrayList<>();
     private String url;
@@ -32,6 +34,7 @@ public class GetLaboratoryRes {
                 .map(GetReviewRes::new)
                 .collect(Collectors.toList());
         this.reviewNum = laboratory.getReviews().size();
+        this.address = laboratory.getAddress();
 
         //별점 로직 추가
         double total = 0;
