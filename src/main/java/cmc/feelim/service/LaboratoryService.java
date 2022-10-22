@@ -81,5 +81,14 @@ public class LaboratoryService {
         return sortedList;
     }
 
+    /** 이름으로 검색 **/
+    public List<GetLaboratoriesRes> search(String keyword) throws BaseException {
+        List<ProcessingLaboratory> laboratories = laboratoryRepository.findByNameContaining(keyword);
 
+        List<GetLaboratoriesRes> getLaboratoriesRes = laboratories.stream()
+                .map(GetLaboratoriesRes::new)
+                .collect(Collectors.toList());
+
+        return getLaboratoriesRes;
+    }
 }
