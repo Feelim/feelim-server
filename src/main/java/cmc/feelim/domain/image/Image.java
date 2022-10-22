@@ -25,6 +25,8 @@ public class Image extends BaseEntity {
 
     private Long fileSize;
 
+    private String fileType;
+
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,10 +53,11 @@ public class Image extends BaseEntity {
         this.url = url;
     }
 
-    public Image(String fileName, String fileUrl, long size) {
+    public Image(String fileName, String fileUrl, long size, String fileType) {
         this.originFileName = fileName;
         this.url = fileUrl;
         this.fileSize = size;
+        this.fileType = fileType;
     }
 
     public void updatePost(Post post) {
@@ -66,5 +69,9 @@ public class Image extends BaseEntity {
 
     public void updateUser(User user) {
         this.user = user;
+    }
+
+    public ImageDto toDto() {
+        return new ImageDto(this);
     }
 }

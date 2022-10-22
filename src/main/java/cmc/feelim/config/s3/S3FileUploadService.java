@@ -42,7 +42,7 @@ public class S3FileUploadService {
                 throw new IllegalArgumentException(String.format("파일 변환 중 오류 발생 ($s)", multipartFile.getOriginalFilename()));
             }
 
-            Image image = new Image(fileName, s3Service.getFileUrl(fileName), multipartFile.getSize());
+            Image image = new Image(fileName, s3Service.getFileUrl(fileName), multipartFile.getSize(), multipartFile.getContentType());
             image.updatePost(post);
             imageRepository.save(image);
             imageList.add(image);
@@ -66,7 +66,7 @@ public class S3FileUploadService {
                 throw new IllegalArgumentException(String.format("파일 변환 중 오류 발생 ($s)", multipartFile.getOriginalFilename()));
             }
 
-            Image image = new Image(fileName, s3Service.getFileUrl(fileName), multipartFile.getSize());
+            Image image = new Image(fileName, s3Service.getFileUrl(fileName), multipartFile.getSize(), multipartFile.getContentType());
             image.updateLaboratory(laboratory);
             imageRepository.save(image);
             imageList.add(image);
@@ -122,7 +122,7 @@ public class S3FileUploadService {
             throw new IllegalArgumentException(String.format("파일 변환 중 오류 발생 ($s)", profile.getOriginalFilename()));
         }
 
-        Image image = new Image(fileName, s3Service.getFileUrl(fileName), profile.getSize());
+        Image image = new Image(fileName, s3Service.getFileUrl(fileName), profile.getSize(), profile.getContentType());
         image.updateUser(user);
         imageRepository.save(image);
         return image;
