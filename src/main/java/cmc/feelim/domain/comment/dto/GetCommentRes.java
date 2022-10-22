@@ -31,7 +31,7 @@ public class GetCommentRes {
 
         int index = comment.getUser().getImages().size() - 1;
 
-        if(comment.getUser().getImages() != null) {
+        if(!comment.getUser().getImages().isEmpty()) {
             this.picture = comment.getUser().getImages().get(index).getUrl();
         }
     }
