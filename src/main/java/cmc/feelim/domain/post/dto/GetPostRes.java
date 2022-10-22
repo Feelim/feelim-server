@@ -1,6 +1,7 @@
 package cmc.feelim.domain.post.dto;
 
 import cmc.feelim.domain.comment.dto.GetCommentRes;
+import cmc.feelim.domain.image.ImageDto;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.user.dto.WriterDto;
@@ -24,7 +25,9 @@ public class GetPostRes {
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
-    private List<String> images = new ArrayList<>();
+
+    //이미지 url, 파일명, 파일 타입으로 구성
+    private List<ImageDto> images = new ArrayList<>();
     private List<GetCommentRes> comment;
 
     public GetPostRes(Post post) {
@@ -39,6 +42,8 @@ public class GetPostRes {
                                 .collect(Collectors.toList());
         //image 처리
         post.getImages().stream()
-                .forEach(image -> {images.add(image.getUrl());});
+                .forEach(image -> {images.add(image.toDto());});
+
+
     }
 }
