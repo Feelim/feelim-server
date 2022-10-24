@@ -7,13 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GetReviewRes {
-    private Long id;
+    private Long reviewId;
+    private Long userId;
     private String nickname;
     private String content;
     private double star;
 
     public GetReviewRes(Review review) {
-        this.id = review.getId();
+        this.reviewId = review.getId();
+        this.userId = review.getUser().getId();
         this.nickname = review.getUser().getNickname();
         this.content = review.getContent();
         this.star = review.getStar();
