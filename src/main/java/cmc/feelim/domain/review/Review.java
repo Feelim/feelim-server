@@ -3,8 +3,10 @@ package cmc.feelim.domain.review;
 import cmc.feelim.domain.BaseEntity;
 import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
+import cmc.feelim.domain.review.dto.PostReviewReq;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @NotNull
+@NoArgsConstructor
 public class Review extends BaseEntity {
 
     @Id
@@ -31,4 +34,10 @@ public class Review extends BaseEntity {
 
     private String content;
 
+    public Review(ProcessingLaboratory laboratory, User user, PostReviewReq postReviewReq) {
+        this.user = user;
+        this.laboratory = laboratory;
+        this.star = postReviewReq.getStar();
+        this.content = postReviewReq.getContent();
+    }
 }
