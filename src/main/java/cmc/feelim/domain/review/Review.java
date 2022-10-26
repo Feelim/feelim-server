@@ -3,6 +3,7 @@ package cmc.feelim.domain.review;
 import cmc.feelim.domain.BaseEntity;
 import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
+import cmc.feelim.domain.review.dto.PatchReviewReq;
 import cmc.feelim.domain.review.dto.PostReviewReq;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
@@ -39,5 +40,11 @@ public class Review extends BaseEntity {
         this.laboratory = laboratory;
         this.star = postReviewReq.getStar();
         this.content = postReviewReq.getContent();
+    }
+
+    public Long update(PatchReviewReq patchReviewReq) {
+        this.star = patchReviewReq.getStar();
+        this.content = patchReviewReq.getContent();
+        return this.id;
     }
 }
