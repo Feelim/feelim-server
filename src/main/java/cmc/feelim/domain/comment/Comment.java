@@ -34,7 +34,7 @@ public class Comment extends BaseEntity {
     public Comment(User user, Post post, PostCommentReq postCommentReq) {
         this.user = user;
         this.post = post;
-        this.content = post.getContent();
+        this.content = postCommentReq.getContent();
     }
 
     public void update(PatchCommentReq patchCommentReq) {
