@@ -2,10 +2,12 @@ package cmc.feelim.controller;
 
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponse;
+import cmc.feelim.domain.review.dto.PatchReviewReq;
 import cmc.feelim.domain.review.dto.PostReviewReq;
 import cmc.feelim.service.ReviewService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,5 +20,12 @@ public class ReviewController {
     @PostMapping("/new")
     public BaseResponse<Long> create(@PathVariable Long laboratoryId, @RequestBody PostReviewReq postReviewReq) throws BaseException {
         return new BaseResponse<Long>(reviewService.create(laboratoryId, postReviewReq));
+    }
+
+    @Transactional
+    @ApiOperation("후기 수정")
+    @PatchMapping("/{reviewId}/modifying")
+    public BaseResponse<Long> modify(@PathVariable long laboratoryId, @PathVariable long reviewId, @RequestBody PatchReviewReq patchReviewReq) throws BaseException {
+        return new BaseResponse<Long>(reviewService.modify(laboratoryId, reviewId, patchReviewReq));
     }
 }

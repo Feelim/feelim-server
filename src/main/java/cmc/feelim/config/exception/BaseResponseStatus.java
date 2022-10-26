@@ -48,7 +48,8 @@ public enum BaseResponseStatus {
     CHECK_POST_ID(false, 2022, "존재하지 않는 게시물입니다."),
 
     // laboratory
-    NO_LABORATORY(false, 2301, "laboratoryId에 해당하는 현상소가 존재하지 않습니다."),
+    NO_LABORATORY(false, 2301, "존재하지 않는 현상소입니다."),
+    NO_REVIEW(false, 2032, "존재하지 않는 리뷰입니다."),
 
     // deliveryInfo
     PATCH_DELIVERYINFO_IS_DEFAULT_ADDRESS(false, 2030, "기본배송지는 삭제되지않습니다"),
