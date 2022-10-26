@@ -2,6 +2,7 @@ package cmc.feelim.service;
 
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.laboratory.LaboratoryRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.review.Review;
@@ -66,4 +67,33 @@ public class ReviewService {
 
         return review.update(patchReviewReq);
     }
+
+    /** 리뷰 삭제 **/
+    @Transactional
+    public Long delete(Long laboratoryId, Long reviewId) throws BaseException {
+        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId).orElseThrow( () -> {
+            try {
+                throw new BaseException(BaseResponseStatus.NO_LABORATORY);
+            } catch (BaseException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        User user = authService.getUserFromAuth();
+        Review review = reviewRepository.findById(reviewId).orElseThrow( () -> {
+            try {
+                throw new BaseException(BaseResponseStatus.NO_REVIEW);
+            } catch (BaseException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        if(review.getUser() != user) {
+            throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
+        }
+
+        review.changeStatus(Status.DELETED);
+        return review.getId();
+    }
+
 }

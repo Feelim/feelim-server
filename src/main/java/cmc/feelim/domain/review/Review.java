@@ -8,6 +8,7 @@ import cmc.feelim.domain.review.dto.PostReviewReq;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NotNull
 @NoArgsConstructor
+@Where(clause = "status='ACTIVE'")
 public class Review extends BaseEntity {
 
     @Id

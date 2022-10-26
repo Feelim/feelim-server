@@ -24,7 +24,13 @@ public class ReviewController {
 
     @ApiOperation("후기 수정")
     @PatchMapping("/{reviewId}/modifying")
-    public BaseResponse<Long> modify(@PathVariable long laboratoryId, @PathVariable long reviewId, @RequestBody PatchReviewReq patchReviewReq) throws BaseException {
+    public BaseResponse<Long> modify(@PathVariable Long laboratoryId, @PathVariable Long reviewId, @RequestBody PatchReviewReq patchReviewReq) throws BaseException {
         return new BaseResponse<Long>(reviewService.modify(laboratoryId, reviewId, patchReviewReq));
+    }
+
+    @ApiOperation("후기 삭제")
+    @DeleteMapping("/{reviewId}/delete")
+    public BaseResponse<Long> delete(@PathVariable Long laboratoryId, @PathVariable Long reviewId) throws BaseException {
+        return new BaseResponse<Long>(reviewService.delete(laboratoryId, reviewId));
     }
 }
