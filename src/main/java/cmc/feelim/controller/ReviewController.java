@@ -22,7 +22,6 @@ public class ReviewController {
         return new BaseResponse<Long>(reviewService.create(laboratoryId, postReviewReq));
     }
 
-    @Transactional
     @ApiOperation("후기 수정")
     @PatchMapping("/{reviewId}/modifying")
     public BaseResponse<Long> modify(@PathVariable long laboratoryId, @PathVariable long reviewId, @RequestBody PatchReviewReq patchReviewReq) throws BaseException {
