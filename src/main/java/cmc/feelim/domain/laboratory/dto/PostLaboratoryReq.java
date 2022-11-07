@@ -30,4 +30,8 @@ public class PostLaboratoryReq {
     private double y;
 
     private List<MultipartFile> bills;
+
+    private MultipartFile profile;
+
+    private MultipartFile background;
 }

@@ -59,6 +59,12 @@ public class ProcessingLaboratory extends BaseEntity {
     @OneToMany(mappedBy = "laboratory", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
+    @OneToMany(mappedBy = "labProfile", cascade = CascadeType.ALL)
+    private List<Image> profiles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "labBackground", cascade = CascadeType.ALL)
+    private List<Image> backgrounds = new ArrayList<>();
+
     public ProcessingLaboratory(PostLaboratoryReq postLaboratoryReq) {
         this.name = postLaboratoryReq.getName();
         this.introduction = postLaboratoryReq.getIntroduction();
@@ -70,5 +76,13 @@ public class ProcessingLaboratory extends BaseEntity {
 
     public void updateImage(List<Image> images) {
         this.bills = images;
+    }
+
+    public void updateProfile(Image profile) {
+        this.profiles.add(profile);
+    }
+
+    public void updateBackground(Image background) {
+        this.backgrounds.add(background);
     }
 }

@@ -23,7 +23,6 @@ public class LaboratoryController {
     @ApiOperation("현상소 추가")
     @PostMapping(value = "/new", consumes = {"multipart/form-data"})
     public BaseResponse<Long> create(@ModelAttribute PostLaboratoryReq postLaboratoryReq) throws BaseException {
-        System.out.println(postLaboratoryReq.getCity() + " controller !!!!!!!!!!!!!!!!!1");
         return new BaseResponse<Long>(laboratoryService.save(postLaboratoryReq));
     }
 
