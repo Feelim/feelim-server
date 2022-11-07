@@ -61,6 +61,7 @@ public class Post extends BaseEntity {
     }
 
     public void updatePost(PatchPostReq patchPostReq) {
+        this.category = patchPostReq.getCategory();
         this.title = patchPostReq.getTitle();
         this.content = patchPostReq.getContent();
     }
