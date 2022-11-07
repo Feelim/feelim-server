@@ -13,16 +13,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @ComponentScan(basePackages = {"cmc/feelim/controller"})
 public class AuthController {
-
     private final AuthService authService;
 
     /** 소셜로그인 후 리다이렉트 - ! **/
     @ApiOperation(value = "로그인 완료후 리다이렉트")
-    @GetMapping("")
+    @GetMapping("/success")
     @ResponseBody
-    public BaseResponse<OAuthResponse> jwtResponse(@RequestParam String jwt, @RequestParam Long id) {
-        System.out.println("jwt: " + jwt + "!!!!!!!!!!!!!!");
-        return new BaseResponse<>(new OAuthResponse(id,jwt));
+    public BaseResponse<OAuthResponse> jwtResponse(@RequestParam Long userId, @RequestParam("grantType") String grantType, @RequestParam("accessToken") String accessToken, @RequestParam("refreshToken") String refreshToken, @RequestParam("accessTokenExpiresIn") Long accessTokenExpiresIn,  @RequestParam("role") String role) {
+        return new BaseResponse<OAuthResponse>(new OAuthResponse(userId, accessToken, refreshToken, accessTokenExpiresIn, role));
     }
+
+//    @PostMapping("/login")
+//    public BaseResponse<LoginRes> login(@RequestParam String email, @RequestParam String name) {
+//        return new BaseResponse<>(oAuthService.login(email, name));
+//    }
 
 }
