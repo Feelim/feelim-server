@@ -38,6 +38,14 @@ public class Image extends BaseEntity {
     private ProcessingLaboratory laboratory;
 
     @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "processing_laboratory_id")
+    private ProcessingLaboratory labProfile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "processing_laboratory_id")
+    private ProcessingLaboratory labBackground;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "archive_id")
     private Archive archive;
 
@@ -65,6 +73,14 @@ public class Image extends BaseEntity {
     }
     public void updateLaboratory(ProcessingLaboratory laboratory) {
         this.laboratory = laboratory;
+    }
+
+    public void updateLabProfile(ProcessingLaboratory laboratory) {
+        this.labProfile = laboratory;
+    }
+
+    public void updateLabBackground(ProcessingLaboratory laboratory) {
+        this.labBackground = laboratory;
     }
 
     public void updateUser(User user) {

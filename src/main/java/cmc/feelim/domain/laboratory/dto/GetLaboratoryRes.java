@@ -19,6 +19,8 @@ public class GetLaboratoryRes {
     private Address address;
     private String phone;
     private List<String> bills = new ArrayList<>();
+    private String profile;
+    private String background;
     private String url;
     private List<GetReviewRes> reviews;
     private int reviewNum;
@@ -48,5 +50,8 @@ public class GetLaboratoryRes {
         //사진
         laboratory.getBills().stream()
                 .forEach(bill -> {bills.add(bill.getUrl());});
+
+        this.profile = laboratory.getProfiles().get(0).getUrl();
+        this.background = laboratory.getBackgrounds().get(0).getUrl();
     }
 }
