@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
+    @Query("select p from Post p where p.category IN (:category) order by p.id DESC")
     List<Post> findByCategory(Category category);
 
     List<Post> findByTitleContaining(@Param("keyword") String keyword);
