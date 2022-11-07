@@ -36,7 +36,7 @@ public class JwtTokenProvider {
     //토큰 유효 시간 30분
     @Value("${jwt.access-expired}")
     private long tokenValidTime;
-    private static final String BEARER_TYPE = "bearer ";
+    private static final String BEARER_TYPE = "Bearer ";
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -110,6 +110,7 @@ public class JwtTokenProvider {
         return JwtCode.DENIED;
     }
 
+    @Transactional
     public TokenDto createSocialJwt(String username) {
 
         long now = (new Date()).getTime();
@@ -132,10 +133,17 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+
         Optional<User> user = userRepository.findByEmail(username);
+
         RefreshToken refresh = new RefreshToken(user.get(), refreshToken);
 
-        refreshTokenRepository.save(refresh);
+        if(refreshTokenRepository.findByUser(user.get()).isPresent()){
+            Optional<RefreshToken> refreshTokenByUser = refreshTokenRepository.findByUser(user.get());
+            refreshTokenByUser.get().updateToken(refresh.getToken());
+        } else {
+            refreshTokenRepository.save(refresh);
+        }
 
         return TokenDto.builder()
                 .grantType(BEARER_TYPE)

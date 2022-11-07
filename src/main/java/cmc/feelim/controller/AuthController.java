@@ -1,6 +1,8 @@
 package cmc.feelim.controller;
 
 import cmc.feelim.config.auth.dto.OAuthResponse;
+import cmc.feelim.config.auth.dto.TokenDto;
+import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponse;
 import cmc.feelim.service.AuthService;
 import io.swagger.annotations.ApiOperation;
@@ -23,9 +25,11 @@ public class AuthController {
         return new BaseResponse<OAuthResponse>(new OAuthResponse(userId, accessToken, refreshToken, accessTokenExpiresIn, role));
     }
 
-//    @PostMapping("/login")
-//    public BaseResponse<LoginRes> login(@RequestParam String email, @RequestParam String name) {
-//        return new BaseResponse<>(oAuthService.login(email, name));
-//    }
+    @ApiOperation(value = "토큰 갱신")
+    @PostMapping("/token")
+    public BaseResponse<TokenDto> reissueToken(@RequestParam String accessToken, @RequestParam String refreshToken) throws BaseException {
+
+        return new BaseResponse<>(authService.reissueToken(accessToken, refreshToken));
+    }
 
 }
