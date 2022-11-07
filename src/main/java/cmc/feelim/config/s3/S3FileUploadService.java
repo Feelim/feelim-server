@@ -74,6 +74,42 @@ public class S3FileUploadService {
         return imageList;
     }
 
+    /** 현상소 프사 업로드 **/
+    public Image uploadLabProfile(MultipartFile file, ProcessingLaboratory laboratory) {
+        String fileName = laboratory.getName() + "/" + createFileName(file.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(file.getSize());
+        objectMetadata.setContentType(file.getContentType());
+        try (InputStream inputStream = file.getInputStream()) {
+            s3Service.uploadFile(inputStream, objectMetadata, fileName);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(String.format("파일 변환 중 오류 발생 ($s)", file.getOriginalFilename()));
+        }
+
+        Image image = new Image(fileName, s3Service.getFileUrl(fileName), file.getSize(), file.getContentType());
+        image.updateLabProfile(laboratory);
+        imageRepository.save(image);
+        return image;
+    }
+
+    /** 현상소 배경사진 업로드 **/
+    public Image uploadLabBackground(MultipartFile file, ProcessingLaboratory laboratory) {
+        String fileName = laboratory.getName() + "/" + createFileName(file.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(file.getSize());
+        objectMetadata.setContentType(file.getContentType());
+        try (InputStream inputStream = file.getInputStream()) {
+            s3Service.uploadFile(inputStream, objectMetadata, fileName);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(String.format("파일 변환 중 오류 발생 ($s)", file.getOriginalFilename()));
+        }
+
+        Image image = new Image(fileName, s3Service.getFileUrl(fileName), file.getSize(), file.getContentType());
+        image.updateLabBackground(laboratory);
+        imageRepository.save(image);
+        return image;
+    }
+
     //Multipart를 통해 전송된 파일을 업로드 하는 메소드
     public String uploadImage(MultipartFile file, String dir){
         String fileName = dir +"/"+ createFileName(file.getOriginalFilename());

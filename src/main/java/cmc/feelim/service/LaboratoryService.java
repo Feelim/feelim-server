@@ -34,6 +34,14 @@ public class LaboratoryService {
             laboratory.updateImage(fileUploadService.uploadImageFromLaboratory(postLaboratoryReq.getBills(), laboratory));
         }
 
+        if(postLaboratoryReq.getProfile() != null) {
+            laboratory.updateProfile(fileUploadService.uploadLabProfile(postLaboratoryReq.getProfile(), laboratory));
+        }
+
+        if(postLaboratoryReq.getBackground() != null) {
+            laboratory.updateBackground(fileUploadService.uploadLabBackground(postLaboratoryReq.getBackground(), laboratory));
+        }
+
         return laboratoryRepository.save(laboratory).getId();
     }
 
