@@ -5,6 +5,7 @@ import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.Status;
 import cmc.feelim.domain.comment.Comment;
+import cmc.feelim.domain.laboratory.dto.GetLaboratoriesRes;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
@@ -17,9 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +46,8 @@ public class PostService {
 
     /** 모든 게시물 불러오기 **/
     public List<GetPostsRes> getAll() {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllDesc();
+
         List<GetPostsRes> getPostsRes = posts.stream()
                 .map(GetPostsRes::new)
                 .collect(Collectors.toList());
