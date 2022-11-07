@@ -1,10 +1,12 @@
 package cmc.feelim.config.auth.handler;
 
 import cmc.feelim.config.auth.dto.SessionUser;
+import cmc.feelim.config.auth.dto.TokenDto;
 import cmc.feelim.config.security.JwtTokenProvider;
 import cmc.feelim.domain.user.User;
 import cmc.feelim.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -32,14 +34,18 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         SessionUser sessionMember = (SessionUser) session.getAttribute("user");
         Optional<User> user = userRepository.findByEmail(sessionMember.getEmail());
 
-        String jwt = jwtTokenProvider.createSocialJwt(user.get().getEmail());
-        System.out.println(user.get().getId()+"??????????????????????????????????????????????");
-        System.out.println(sessionMember.getId()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(jwt);
+        Authentication auth = new UsernamePasswordAuthenticationToken(sessionMember.getId(), "", authentication.getAuthorities());
 
-        String targetUrl = UriComponentsBuilder.fromUriString("/auth")
-                .queryParam("jwt",jwt)
-                .queryParam("id", user.get().getId())
+//        String jwt = jwtTokenProvider.createSocialJwt(user.get().getEmail());
+        TokenDto token = jwtTokenProvider.createSocialJwt(user.get().getEmail());
+
+        String targetUrl = UriComponentsBuilder.fromUriString("/auth/success")
+                .queryParam("userId", user.get().getId())
+                .queryParam("grantType", token.getGrantType())
+                .queryParam("accessToken", token.getAccessToken())
+                .queryParam("refreshToken", token.getRefreshToken())
+                .queryParam("accessTokenExpiresIn", token.getAccessTokenExpiresIn())
+                .queryParam("role", sessionMember.getRole())
                 .build().toUriString();
 
         getRedirectStrategy().sendRedirect(request,response,targetUrl);
