@@ -7,5 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class OAuthResponse {
     private Long userId;
-    private String jwt;
+    private String accessToken;
+    private String refreshToken;
+    Long accessTokenExpiresIn;
+    String role;
 }
