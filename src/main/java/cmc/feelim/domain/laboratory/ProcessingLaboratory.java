@@ -35,6 +35,7 @@ public class ProcessingLaboratory extends BaseEntity {
     @Column(length = 20)
     private String name;
 
+    @Column(length = 500)
     private String introduction;
 
     private String phone;
