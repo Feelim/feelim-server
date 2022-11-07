@@ -32,6 +32,9 @@ public class GetLaboratoriesRes implements Comparator<GetLaboratoriesRes> {
     private double star;
     @JsonBackReference
     private Point point;
+
+    private Double x;
+    private Double y;
     private double distance;
 
     public GetLaboratoriesRes(ProcessingLaboratory processingLaboratory) {
@@ -40,6 +43,8 @@ public class GetLaboratoriesRes implements Comparator<GetLaboratoriesRes> {
         this.address = processingLaboratory.getAddress();
         this.point = processingLaboratory.getPoint();
         this.reviewNum = processingLaboratory.getReviews().size();
+        this.x = processingLaboratory.getPoint().getX();
+        this.y = processingLaboratory.getPoint().getY();
 
         //별점 로직
         double total = 0;
@@ -51,7 +56,6 @@ public class GetLaboratoriesRes implements Comparator<GetLaboratoriesRes> {
         //사진
         processingLaboratory.getBills().stream()
                 .forEach(bill -> {images.add(bill.getUrl());});
-
 
     }
 
