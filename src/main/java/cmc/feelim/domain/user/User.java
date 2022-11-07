@@ -106,6 +106,14 @@ public class User extends BaseEntity {
         this.role = Role.USER;
     }
 
+    public static User create(String email, String name) {
+
+        return User.builder()
+                .email(email)
+                .name(name)
+                .build();
+    }
+
     public void updateProfile(PatchProfileReq patchProfileReq) {
         this.nickname = patchProfileReq.getNickname();
         this.introduction = patchProfileReq.getIntroduction();

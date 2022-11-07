@@ -1,29 +1,34 @@
 package cmc.feelim.config.security;
 
+import cmc.feelim.config.auth.dto.TokenDto;
+import cmc.feelim.domain.token.RefreshToken;
+import cmc.feelim.domain.token.RefreshTokenRepository;
 import cmc.feelim.domain.user.Role;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import cmc.feelim.domain.user.User;
+import cmc.feelim.domain.user.UserRepository;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class JwtTokenProvider {
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -31,6 +36,8 @@ public class JwtTokenProvider {
     //토큰 유효 시간 30분
     @Value("${jwt.access-expired}")
     private long tokenValidTime;
+    private static final String BEARER_TYPE = "bearer ";
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -90,16 +97,88 @@ public class JwtTokenProvider {
     }
 
     //토큰의 유효성 + 만료 일자 확인
-    public boolean validateToken(String jwtToken){
+    public JwtCode validateToken(String jwtToken){
         try{
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e){
-            return false;
+//            return !claims.getBody().getExpiration().before(new Date());
+            return JwtCode.ACCESS;
+        } catch (ExpiredJwtException e){
+            return JwtCode.EXPIRED;
+        } catch (JwtException | IllegalArgumentException e) {
+            log.info("JwtException: {}", e);
+        }
+        return JwtCode.DENIED;
+    }
+
+    public TokenDto createSocialJwt(String username) {
+
+        long now = (new Date()).getTime();
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "user");
+        val myName = username;
+        claims.put("myName", myName);
+
+        String accessToken = Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setClaims(claims)
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenValidTime * 1000))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+
+        String refreshToken = Jwts.builder()
+                .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+        Optional<User> user = userRepository.findByEmail(username);
+        RefreshToken refresh = new RefreshToken(user.get(), refreshToken);
+
+        refreshTokenRepository.save(refresh);
+
+        return TokenDto.builder()
+                .grantType(BEARER_TYPE)
+                .accessToken(accessToken)
+                .accessTokenExpiresIn(new Date(System.currentTimeMillis() + tokenValidTime * 1000).getTime())
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    @Transactional
+    public String reissueRefreshToken(String refreshToken) throws RuntimeException{
+        // refresh token을 디비의 그것과 비교해보기
+        Authentication authentication = getAuthentication(refreshToken);
+        RefreshToken findRefreshToken = (RefreshToken) refreshTokenRepository.findByUserId(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("userId : " + authentication.getName() + " was not found"));
+
+        if(findRefreshToken.getToken().equals(refreshToken)){
+            // 새로운거 생성
+            String newRefreshToken = createRefreshToken(authentication);
+            findRefreshToken.updateToken(newRefreshToken);
+            return newRefreshToken;
+        }
+        else {
+            log.info("refresh 토큰이 일치하지 않습니다. ");
+            return null;
         }
     }
 
-    public String createSocialJwt(String username) {
+    private String createRefreshToken(Authentication authentication){
+
+        long now = (new Date()).getTime();
+
+        return Jwts.builder()
+                .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+    public String createAccessToken(Authentication authentication) {
+
+        long now = (new Date()).getTime();
+
+        String username = authentication.getName();
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", "user");
@@ -114,5 +193,11 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(System.currentTimeMillis() + tokenValidTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+    }
+
+    public static enum JwtCode{
+        DENIED,
+        ACCESS,
+        EXPIRED;
     }
 }
