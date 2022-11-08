@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/laboratory/{laboratoryId}")
 @RequiredArgsConstructor
@@ -18,13 +20,13 @@ public class ReviewController {
 
     @ApiOperation("후기 작성")
     @PostMapping("/new")
-    public BaseResponse<Long> create(@PathVariable Long laboratoryId, @RequestBody PostReviewReq postReviewReq) throws BaseException {
+    public BaseResponse<Long> create(@PathVariable Long laboratoryId, @RequestBody PostReviewReq postReviewReq) throws BaseException, IOException {
         return new BaseResponse<Long>(reviewService.create(laboratoryId, postReviewReq));
     }
 
     @ApiOperation("후기 수정")
     @PatchMapping("/{reviewId}/modifying")
-    public BaseResponse<Long> modify(@PathVariable Long laboratoryId, @PathVariable Long reviewId, @RequestBody PatchReviewReq patchReviewReq) throws BaseException {
+    public BaseResponse<Long> modify(@PathVariable Long laboratoryId, @PathVariable Long reviewId, @RequestBody PatchReviewReq patchReviewReq) throws BaseException, IOException {
         return new BaseResponse<Long>(reviewService.modify(laboratoryId, reviewId, patchReviewReq));
     }
 

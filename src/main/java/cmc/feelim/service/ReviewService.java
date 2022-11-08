@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -27,13 +29,8 @@ public class ReviewService {
     /** 현상소 후기 작성 **/
     @Transactional
     public Long create(Long laboratoryId, PostReviewReq postReviewReq) throws BaseException {
-        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId).orElseThrow( () -> {
-            try {
-                throw new BaseException(BaseResponseStatus.NO_LABORATORY);
-            } catch (BaseException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId)
+                .orElseThrow( () -> new BaseException(BaseResponseStatus.NO_LABORATORY));
 
         User user = authService.getUserFromAuth();
 
@@ -44,22 +41,12 @@ public class ReviewService {
     /** 후기 수정 **/
     @Transactional
     public Long modify(long laboratoryId, long reviewId, PatchReviewReq patchReviewReq) throws BaseException {
-        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId).orElseThrow( () -> {
-            try {
-                throw new BaseException(BaseResponseStatus.NO_LABORATORY);
-            } catch (BaseException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId)
+                .orElseThrow( () -> new BaseException(BaseResponseStatus.NO_LABORATORY));
 
         User user = authService.getUserFromAuth();
-        Review review = reviewRepository.findById(reviewId).orElseThrow( () -> {
-            try {
-                throw new BaseException(BaseResponseStatus.NO_REVIEW);
-            } catch (BaseException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        Review review = reviewRepository.findById(reviewId).orElseThrow( () ->
+                new BaseException(BaseResponseStatus.NO_REVIEW));
 
         if(review.getUser() != user) {
             throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
@@ -71,22 +58,12 @@ public class ReviewService {
     /** 리뷰 삭제 **/
     @Transactional
     public Long delete(Long laboratoryId, Long reviewId) throws BaseException {
-        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId).orElseThrow( () -> {
-            try {
-                throw new BaseException(BaseResponseStatus.NO_LABORATORY);
-            } catch (BaseException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId)
+                .orElseThrow( () -> new BaseException(BaseResponseStatus.NO_LABORATORY));
 
         User user = authService.getUserFromAuth();
-        Review review = reviewRepository.findById(reviewId).orElseThrow( () -> {
-            try {
-                throw new BaseException(BaseResponseStatus.NO_REVIEW);
-            } catch (BaseException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        Review review = reviewRepository.findById(reviewId).orElseThrow( () ->
+                new BaseException(BaseResponseStatus.NO_REVIEW));
 
         if(review.getUser() != user) {
             throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
