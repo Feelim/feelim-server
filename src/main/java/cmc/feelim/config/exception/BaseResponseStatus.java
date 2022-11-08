@@ -23,6 +23,7 @@ public enum BaseResponseStatus {
     INVALID_USER_JWT(false, 2003, "권한이 없는 유저의 접근입니다."),
     INVALID_REFRESH_TOKEN(false, 2004, "Refresh Token이 유효하지 않습니다."),
     CHECK_REFRESH_TOKEN(false, 2005, "Refresh Token 정보가 불일치합니다"),
+    APPLE_FAIL(false, 2006, "애플 유저 조회에 실패했습니다."),
 
     // users
     DOUBLE_CHECK_PWD(false, 2009, "비밀번호를 다시 확인해주세요."),
