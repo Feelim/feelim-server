@@ -1,5 +1,7 @@
 package cmc.feelim.service;
 
+import cmc.feelim.config.auth.dto.AppleLoginReq;
+import cmc.feelim.config.auth.dto.LoginRes;
 import cmc.feelim.config.auth.dto.TokenDto;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
@@ -8,12 +10,20 @@ import cmc.feelim.domain.token.RefreshToken;
 import cmc.feelim.domain.token.RefreshTokenRepository;
 import cmc.feelim.domain.user.User;
 import cmc.feelim.domain.user.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static cmc.feelim.config.exception.BaseResponseStatus.*;
@@ -49,14 +59,14 @@ public class AuthService {
         //Access Token에서 Member Id 가져오기
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
 
-        User user = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> {
-                    try {
-                        throw new BaseException(INVALID_EMAIL);
-                    } catch (BaseException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+        Optional<User> user = userRepository.findByEmail(authentication.getName());
+//                .orElseThrow(() -> {
+//                    try {
+//                        throw new BaseException(INVALID_EMAIL);
+//                    } catch (BaseException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                });
 
         //저장소에서 memberID 기반으로 refresh token 값 가져오기
         RefreshToken token = refreshTokenRepository.findByUser(user)
@@ -73,5 +83,41 @@ public class AuthService {
         token.updateToken(tokenDto.getRefreshToken());
 
         return tokenDto;
+    }
+
+    @Transactional
+    public LoginRes appleLogin(AppleLoginReq appleLoginReq) throws JsonProcessingException {
+        //토큰 복호화
+        int i = appleLoginReq.getToken().lastIndexOf('.');
+        String withoutSignature = appleLoginReq.getToken().substring(0, i+1);
+        Jwt<Header, Claims> untrusted = Jwts.parser().parseClaimsJwt(withoutSignature);
+
+        String email = (String) untrusted.getBody().get("email");
+        String name = "애플로그인";
+
+        // 로그인
+        User user = userRepository.findByEmail(email)
+                .orElse(User.create(email, name));
+
+        userRepository.save(user);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), "", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+
+        TokenDto token = tokenProvider.createSocialJwt(auth.getName());
+
+        RefreshToken refreshToken = RefreshToken.builder()
+                .user(user)
+                .token(token.getRefreshToken())
+                .build();
+
+        refreshTokenRepository.save(refreshToken);
+
+        return LoginRes.builder()
+                .grantType(token.getGrantType())
+                .accessToken(token.getAccessToken())
+                .refreshToken(token.getRefreshToken())
+                .accessTokenExpiresIn(token.getAccessTokenExpiresIn())
+                .role(user.getRole().name())
+                .build();
     }
 }
