@@ -51,7 +51,12 @@ public class GetLaboratoryRes {
         laboratory.getBills().stream()
                 .forEach(bill -> {bills.add(bill.getUrl());});
 
-        this.profile = laboratory.getProfiles().get(0).getUrl();
-        this.background = laboratory.getBackgrounds().get(0).getUrl();
+        if(!laboratory.getProfiles().isEmpty()) {
+            this.profile = laboratory.getProfiles().get(0).getUrl();
+        }
+        
+        if(!laboratory.getBackgrounds().isEmpty()) {
+            this.background = laboratory.getBackgrounds().get(0).getUrl();
+        }
     }
 }
