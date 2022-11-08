@@ -138,8 +138,8 @@ public class JwtTokenProvider {
 
         RefreshToken refresh = new RefreshToken(user.get(), refreshToken);
 
-        if(refreshTokenRepository.findByUser(user.get()).isPresent()){
-            Optional<RefreshToken> refreshTokenByUser = refreshTokenRepository.findByUser(user.get());
+        if(refreshTokenRepository.findByUser(user).isPresent()){
+            Optional<RefreshToken> refreshTokenByUser = refreshTokenRepository.findByUser(user);
             refreshTokenByUser.get().updateToken(refresh.getToken());
         } else {
             refreshTokenRepository.save(refresh);
