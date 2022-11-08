@@ -43,9 +43,10 @@ public class CommentService {
         String title = post.get().getTitle().length() > 6 ? post.get().getTitle().substring(0, 7) : post.get().getTitle();
         String content = (post.get().getContent().length() > 14 ) ? post.get().getContent().substring(0,15) : post.get().getContent();
 
-        fcmService.sendMessageToUser(title + "..." + NotificationType.COMMENT.getMessage(),
-                content + "...",
-                post.get().getUser());
+        if(user != post.get().getUser()) {
+            fcmService.sendMessageToUser(title + "..." + NotificationType.COMMENT.getMessage(),
+                    content + "...", post.get().getUser());
+        }
 
         return commentRepository.save(comment).getId();
     }

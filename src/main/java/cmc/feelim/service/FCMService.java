@@ -16,15 +16,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class FCMService {
 
@@ -74,6 +77,7 @@ public class FCMService {
         logger.error(response.toString());
     }
 
+    @Transactional
     public String makeMessage(String targetToken, String title, String body) throws JsonProcessingException {
         //빌더 패턴을 이용해 fcm Request 객체 생성
         PostFCMReq fcm = PostFCMReq.builder()

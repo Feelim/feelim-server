@@ -23,7 +23,7 @@ public class PostFCMReq {
     @Builder
     @AllArgsConstructor
     @Getter
-    public static class Notification{
+    public static class Notification {
         private String title;
         private String body;
         private String image;
