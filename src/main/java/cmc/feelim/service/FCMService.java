@@ -18,6 +18,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -96,7 +98,7 @@ public class FCMService {
     public String getAccessToken() throws IOException {
 
         GoogleCredentials googleCredentials = GoogleCredentials.fromStream(new ClassPathResource(fcmKeyPath).getInputStream())
-                .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
+                .createScoped(Arrays.asList("https://www.googleapis.com/auth/cloud-platform"));
 
         googleCredentials.refreshIfExpired();
 
