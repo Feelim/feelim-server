@@ -22,16 +22,11 @@ public class RefreshToken extends BaseEntity {
     private User user;
     private String token;
 
+    @Builder
     public RefreshToken(User user, String token) {
         this.user = user;
         this.token = token;
     }
-
-//    @Builder
-//    public RefreshToken(String key, String value) {
-//        this.id = key;
-//        this.token = value;
-//    }
 
     public RefreshToken updateToken(String refreshToken) {
         this.token = refreshToken;
