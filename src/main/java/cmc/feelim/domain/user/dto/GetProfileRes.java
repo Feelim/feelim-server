@@ -10,6 +10,7 @@ public class GetProfileRes {
     private Long id;
     private String image;
     private String nickname;
+    private String email;
     private String introduction;
 
     public GetProfileRes(User user) {
@@ -20,7 +21,7 @@ public class GetProfileRes {
         }
 
         this.id = user.getId();
-
+        this.email = user.getEmail();
         this.nickname = user.getNickname();
         this.introduction = user.getIntroduction();
     }
