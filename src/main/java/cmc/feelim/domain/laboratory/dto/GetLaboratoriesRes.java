@@ -54,7 +54,7 @@ public class GetLaboratoriesRes implements Comparator<GetLaboratoriesRes> {
         }
 
         //사진
-        processingLaboratory.getBills().stream()
+        processingLaboratory.getBackgrounds().stream()
                 .forEach(bill -> {images.add(bill.getUrl());});
 
     }
