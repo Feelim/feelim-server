@@ -29,7 +29,7 @@ import java.util.Map;
 @ComponentScan(basePackages = {"cmc/feelim/controller"})
 public class AuthController {
 //    @Value("${apple.auth-url}")
-    String appleAuthUrl = "https://nid.naver.com/oauth2.0/authorize";
+    String appleAuthUrl = "https://appleid.apple.com";
 
 //    @Value("${apple.redirect-uri}")
     String redirectUri = "https://www.chalkak.shop/login/oauth2/apple";
