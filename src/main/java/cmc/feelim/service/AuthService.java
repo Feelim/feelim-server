@@ -16,6 +16,7 @@ import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 
 import static cmc.feelim.config.exception.BaseResponseStatus.*;
 
@@ -92,12 +94,22 @@ public class AuthService {
         String withoutSignature = appleLoginReq.getToken().substring(0, i+1);
         Jwt<Header, Claims> untrusted = Jwts.parser().parseClaimsJwt(withoutSignature);
 
+        Random random = new Random();
+        String numStr = "";
+
+        for (int j = 0; j < 3; j++) {
+            String ran = Integer.toString(random.nextInt(10));
+            numStr += ran;
+        }
+
         String email = (String) untrusted.getBody().get("email");
-        String name = "애플로그인";
+        String name = "apple" + numStr;
+        String nickname = RandomStringUtils.randomAlphanumeric(8);
+        String pwd = RandomStringUtils.randomAlphanumeric(45);
 
         // 로그인
         User user = userRepository.findByEmail(email)
-                .orElse(User.create(email, name));
+                .orElse(User.create(email, name, nickname, pwd));
 
         userRepository.save(user);
 
