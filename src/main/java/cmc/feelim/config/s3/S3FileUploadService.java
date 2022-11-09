@@ -4,6 +4,7 @@ import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.image.ImageRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.post.Post;
+import cmc.feelim.domain.review.Review;
 import cmc.feelim.domain.user.User;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -162,5 +163,28 @@ public class S3FileUploadService {
         image.updateUser(user);
         imageRepository.save(image);
         return image;
+    }
+
+    public List<Image> uploadFromReview(List<MultipartFile> files, Review review) {
+        List<Image> imageList = new ArrayList<>();
+
+        for(MultipartFile multipartFile : files) {
+
+            String fileName = "review/" + createFileName(multipartFile.getOriginalFilename());
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(multipartFile.getSize());
+            objectMetadata.setContentType(multipartFile.getContentType());
+            try (InputStream inputStream = multipartFile.getInputStream()) {
+                s3Service.uploadFile(inputStream, objectMetadata, fileName);
+            } catch (IOException e) {
+                throw new IllegalArgumentException(String.format("파일 변환 중 오류 발생 ($s)", multipartFile.getOriginalFilename()));
+            }
+
+            Image image = new Image(fileName, s3Service.getFileUrl(fileName), multipartFile.getSize(), multipartFile.getContentType());
+            image.updateReview(review);
+            imageRepository.save(image);
+            imageList.add(image);
+        }
+        return imageList;
     }
 }
