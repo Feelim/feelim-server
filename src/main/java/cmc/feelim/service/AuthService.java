@@ -90,9 +90,9 @@ public class AuthService {
     @Transactional
     public LoginRes appleLogin(AppleLoginReq appleLoginReq) throws JsonProcessingException {
         //토큰 복호화
-        int i = appleLoginReq.getToken().lastIndexOf('.');
-        String withoutSignature = appleLoginReq.getToken().substring(0, i+1);
-        Jwt<Header, Claims> untrusted = Jwts.parser().parseClaimsJwt(withoutSignature);
+//        int i = appleLoginReq.getToken().lastIndexOf('.');
+//        String withoutSignature = appleLoginReq.getToken().substring(0, i+1);
+//        Jwt<Header, Claims> untrusted = Jwts.parser().parseClaimsJwt(withoutSignature);
 
         Random random = new Random();
         String numStr = "";
@@ -102,7 +102,8 @@ public class AuthService {
             numStr += ran;
         }
 
-        String email = (String) untrusted.getBody().get("email");
+//        String email = (String) untrusted.getBody().get("email");
+        String email = appleLoginReq.getEmail();
         String name = "apple" + numStr;
         String nickname = RandomStringUtils.randomAlphanumeric(8);
         String pwd = RandomStringUtils.randomAlphanumeric(45);
