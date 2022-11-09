@@ -5,7 +5,10 @@ import lombok.Data;
 @Data
 public class AppleLoginReq {
     private String token;
-    public AppleLoginReq(String token) {
+    private String email;
+
+    public AppleLoginReq(String token, String email) {
         this.token = token;
+        this.email = email;
     }
 }

@@ -106,11 +106,12 @@ public class User extends BaseEntity {
         this.role = Role.USER;
     }
 
-    public static User create(String email, String name) {
-
+    public static User create(String email, String name, String nickname, String pwd) {
         return User.builder()
                 .email(email)
                 .name(name)
+                .nickname(nickname)
+                .pwd(pwd)
                 .build();
     }
 
