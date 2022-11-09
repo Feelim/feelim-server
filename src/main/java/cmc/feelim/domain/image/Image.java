@@ -5,6 +5,7 @@ import cmc.feelim.domain.archive.Archive;
 import cmc.feelim.domain.film.Film;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.post.Post;
+import cmc.feelim.domain.review.Review;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,6 +58,10 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
+    private Review review;
+
     public Image(String url) {
         this.url = url;
     }
@@ -89,5 +94,9 @@ public class Image extends BaseEntity {
 
     public ImageDto toDto() {
         return new ImageDto(this);
+    }
+
+    public void updateReview(Review review) {
+        this.review = review;
     }
 }

@@ -2,6 +2,7 @@ package cmc.feelim.service;
 
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
+import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.Status;
 import cmc.feelim.domain.laboratory.LaboratoryRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
@@ -14,10 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import java.io.IOException;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,6 +22,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final AuthService authService;
     private final LaboratoryRepository laboratoryRepository;
+    private final S3FileUploadService fileUploadService;
 
     /** 현상소 후기 작성 **/
     @Transactional
@@ -33,8 +31,12 @@ public class ReviewService {
                 .orElseThrow( () -> new BaseException(BaseResponseStatus.NO_LABORATORY));
 
         User user = authService.getUserFromAuth();
-
         Review review = new Review(laboratory, user, postReviewReq);
+
+        if(!postReviewReq.getImages().isEmpty()) {
+            review.updateImage(fileUploadService.uploadFromReview(postReviewReq.getImages(), review));
+        }
+
         return reviewRepository.save(review).getId();
     }
 
@@ -52,7 +54,13 @@ public class ReviewService {
             throw new BaseException(BaseResponseStatus.INVALID_USER_JWT);
         }
 
-        return review.update(patchReviewReq);
+        review.update(patchReviewReq);
+
+        if(!patchReviewReq.getImages().isEmpty()) {
+            review.updateImage(fileUploadService.uploadFromReview(patchReviewReq.getImages(), review));
+        }
+
+        return review.getId();
     }
 
     /** 리뷰 삭제 **/
