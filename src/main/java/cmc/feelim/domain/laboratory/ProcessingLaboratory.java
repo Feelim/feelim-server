@@ -41,6 +41,8 @@ public class ProcessingLaboratory extends BaseEntity {
     private String phone;
 
     private String homepage;
+    private String instagram;
+    private String blog;
 
     @Embedded
     private Address address;
@@ -73,6 +75,8 @@ public class ProcessingLaboratory extends BaseEntity {
         this.homepage = postLaboratoryReq.getHomepage();
         this.address = new Address(postLaboratoryReq.getProvince(), postLaboratoryReq.getCity(), postLaboratoryReq.getStreet());
         this.point = GeomUtil.createPoint(postLaboratoryReq.getX(), postLaboratoryReq.getY());
+        this.instagram = postLaboratoryReq.getInstagram();
+        this.blog = postLaboratoryReq.getBlog();
     }
 
     public void updateImage(List<Image> images) {

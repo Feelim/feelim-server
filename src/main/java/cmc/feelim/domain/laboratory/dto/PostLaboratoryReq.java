@@ -18,6 +18,8 @@ public class PostLaboratoryReq {
     private String phone;
 
     private String homepage;
+    private String instagram;
+    private String blog;
 
     private String province;
 
