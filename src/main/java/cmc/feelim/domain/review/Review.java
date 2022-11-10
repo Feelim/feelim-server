@@ -40,6 +40,7 @@ public class Review extends BaseEntity {
 
     private double star;
 
+    @Column(length = 1000)
     private String content;
 
     public Review(ProcessingLaboratory laboratory, User user, PostReviewReq postReviewReq) {
