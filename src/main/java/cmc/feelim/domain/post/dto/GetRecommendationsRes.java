@@ -16,18 +16,20 @@ public class GetRecommendationsRes {
     private Category category;
     private WriterDto writer;
     private String title;
-    private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime time;
     private int commentNum;
+    private String image;
 
     public GetRecommendationsRes(Post post) {
         this.id = post.getId();
         this.category = post.getCategory();
         this.writer = new WriterDto(post.getUser());
         this.title = post.getTitle();
-        this.content = post.getContent();
         this.time = post.getCreatedAt();
         this.commentNum = post.getComments().size();
+        if(!post.getImages().isEmpty()) {
+            this.image = post.getImages().get(0).getUrl();
+        }
     }
 }
