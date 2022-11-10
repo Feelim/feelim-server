@@ -40,6 +40,8 @@ public class Post extends BaseEntity {
 
     private String content;
 
+    private boolean recommendation = false;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
 
@@ -64,5 +66,10 @@ public class Post extends BaseEntity {
         this.category = patchPostReq.getCategory();
         this.title = patchPostReq.getTitle();
         this.content = patchPostReq.getContent();
+    }
+
+    public Long updateRecommendation(boolean recommendation) {
+        this.recommendation = recommendation;
+        return this.id;
     }
 }
