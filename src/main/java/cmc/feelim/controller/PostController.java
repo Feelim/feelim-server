@@ -88,4 +88,10 @@ public class PostController {
     public BaseResponse<List<GetPostsRes>> getMyCommentingPosts() throws BaseException {
         return new BaseResponse<List<GetPostsRes>>(postService.getCommentedOnPosts());
     }
+
+    @ApiOperation("아티클 선정하기")
+    @PatchMapping("/{postId}/recommendation")
+    public BaseResponse<Long> recommendPost(@PathVariable Long postId, @RequestParam boolean isRecommended) throws BaseException {
+        return new BaseResponse<Long>(postService.recommend(postId, isRecommended));
+    }
 }
