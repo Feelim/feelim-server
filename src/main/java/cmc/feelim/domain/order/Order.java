@@ -41,8 +41,10 @@ public class Order extends BaseEntity {
     private ProcessingLaboratory laboratory;
 
     @NotNull
+    @Column(length = 1000)
     private String info;
 
+    @Column(length = 1000)
     private String demand;
 
     @Enumerated(EnumType.STRING)
