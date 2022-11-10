@@ -1,6 +1,7 @@
 package cmc.feelim.domain.post;
 
 import cmc.feelim.domain.BaseEntity;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.post.dto.PatchPostReq;
@@ -75,6 +76,10 @@ public class Post extends BaseEntity {
     }
 
     public void deleteImages() {
-        this.images = new ArrayList<>();
+//        images.removeAll(this.getImages());
+        for(int i = 0; i < images.size(); i++) {
+            images.get(i).changeStatus(Status.DELETED);
+            images.remove(i);
+        }
     }
 }
