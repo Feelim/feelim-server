@@ -5,6 +5,7 @@ import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.Status;
 import cmc.feelim.domain.comment.Comment;
+import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.laboratory.dto.GetLaboratoriesRes;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
@@ -12,6 +13,7 @@ import cmc.feelim.domain.post.PostRepository;
 import cmc.feelim.domain.post.dto.*;
 import cmc.feelim.domain.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,10 +88,10 @@ public class PostService {
             throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
         }
 
-        if(patchPostReq.getImages() != null) {
+        if(!patchPostReq.getImages().isEmpty()) {
             post.updatePost(patchPostReq);
             post.updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post));
-        } else if(patchPostReq.getImages() == null) {
+        } else if(patchPostReq.getImages().isEmpty()) {
             post.deleteImages();
         }
         return post.getId();
