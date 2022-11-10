@@ -38,6 +38,7 @@ public class Post extends BaseEntity {
     @Column(length = 30)
     private String title;
 
+    @Column(length = 5000)
     private String content;
 
     private boolean recommendation = false;
