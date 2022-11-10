@@ -8,6 +8,7 @@ import cmc.feelim.domain.laboratory.dto.PostLaboratoryReq;
 import cmc.feelim.service.LaboratoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
@@ -38,7 +39,7 @@ public class LaboratoryController {
         return new BaseResponse<GetLaboratoryRes>(laboratoryService.getOne(laboratoryId));
     }
 
-    @ApiOperation("주변 현상소 검색")
+    @ApiOperation("주변 현상소 거리순")
     @GetMapping("/nearby")
     public BaseResponse<List<GetLaboratoriesRes>> getByDistance(@RequestParam double x, double y) throws BaseException {
         return new BaseResponse<>(laboratoryService.findByDistance(x, y));
@@ -48,6 +49,13 @@ public class LaboratoryController {
     @GetMapping("/search")
     public BaseResponse<List<GetLaboratoriesRes>> getByName(@RequestParam("keyword") String keyword) throws BaseException {
         return new BaseResponse<List<GetLaboratoriesRes>>(laboratoryService.search(keyword));
+    }
+
+    @Transactional
+    @ApiOperation("현상소 삭제")
+    @DeleteMapping("/{laboratoryId}/delete")
+    public BaseResponse<Long> delete(@PathVariable Long laboratoryId) throws BaseException {
+        return new BaseResponse<Long>(laboratoryService.delete(laboratoryId));
     }
 
 }
