@@ -79,21 +79,20 @@ public class PostService {
     @Transactional
     public Long updatePost(Long postId, PatchPostReq patchPostReq) throws BaseException {
         User user = authService.getUserFromAuth();
-        Optional<Post> post = postRepository.findById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CHECK_POST_ID));
 
-        if(!post.isPresent()) {
-            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
-        }
-
-        if(user != post.get().getUser()) {
+        if(user != post.getUser()) {
             throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
         }
 
         if(patchPostReq.getImages() != null) {
-            post.get().updatePost(patchPostReq);
-            post.get().updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post.get()));
+            post.updatePost(patchPostReq);
+            post.updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post));
+        } else if(patchPostReq.getImages() == null) {
+            post.deleteImages();
         }
-        return post.get().getId();
+        return post.getId();
     }
 
     /** 게시물 삭제 **/

@@ -73,4 +73,8 @@ public class Post extends BaseEntity {
         this.recommendation = recommendation;
         return this.id;
     }
+
+    public void deleteImages() {
+        this.images = new ArrayList<>();
+    }
 }
