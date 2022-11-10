@@ -88,8 +88,9 @@ public class PostService {
             throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
         }
 
+        post.updatePost(patchPostReq);
+
         if(!patchPostReq.getImages().isEmpty()) {
-            post.updatePost(patchPostReq);
             post.updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post));
         } else if(patchPostReq.getImages().isEmpty()) {
             post.deleteImages();
