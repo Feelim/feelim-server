@@ -47,8 +47,8 @@ public class LaboratoryController {
 
     @ApiOperation("현상소 검색")
     @GetMapping("/search")
-    public BaseResponse<List<GetLaboratoriesRes>> getByName(@RequestParam("keyword") String keyword) throws BaseException {
-        return new BaseResponse<List<GetLaboratoriesRes>>(laboratoryService.search(keyword));
+    public BaseResponse<List<GetLaboratoriesRes>> getByName(@RequestParam String keyword, double x, double y) throws BaseException {
+        return new BaseResponse<List<GetLaboratoriesRes>>(laboratoryService.search(keyword, x, y));
     }
 
     @Transactional
