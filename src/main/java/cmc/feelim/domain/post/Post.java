@@ -1,6 +1,7 @@
 package cmc.feelim.domain.post;
 
 import cmc.feelim.domain.BaseEntity;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.post.dto.PatchPostReq;
@@ -72,5 +73,13 @@ public class Post extends BaseEntity {
     public Long updateRecommendation(boolean recommendation) {
         this.recommendation = recommendation;
         return this.id;
+    }
+
+    public void deleteImages() {
+//        images.removeAll(this.getImages());
+        for(int i = 0; i < images.size(); i++) {
+            images.get(i).changeStatus(Status.DELETED);
+            images.remove(i);
+        }
     }
 }

@@ -9,12 +9,14 @@ import cmc.feelim.domain.review.Review;
 import cmc.feelim.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Where(clause = "status='ACTIVE'")
 public class Image extends BaseEntity {
 
     @Id

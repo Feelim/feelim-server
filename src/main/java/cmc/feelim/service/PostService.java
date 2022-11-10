@@ -5,6 +5,7 @@ import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.Status;
 import cmc.feelim.domain.comment.Comment;
+import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.laboratory.dto.GetLaboratoriesRes;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
@@ -12,6 +13,7 @@ import cmc.feelim.domain.post.PostRepository;
 import cmc.feelim.domain.post.dto.*;
 import cmc.feelim.domain.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,21 +81,20 @@ public class PostService {
     @Transactional
     public Long updatePost(Long postId, PatchPostReq patchPostReq) throws BaseException {
         User user = authService.getUserFromAuth();
-        Optional<Post> post = postRepository.findById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CHECK_POST_ID));
 
-        if(!post.isPresent()) {
-            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
-        }
-
-        if(user != post.get().getUser()) {
+        if(user != post.getUser()) {
             throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
         }
 
-        if(patchPostReq.getImages() != null) {
-            post.get().updatePost(patchPostReq);
-            post.get().updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post.get()));
+        if(!patchPostReq.getImages().isEmpty()) {
+            post.updatePost(patchPostReq);
+            post.updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post));
+        } else if(patchPostReq.getImages().isEmpty()) {
+            post.deleteImages();
         }
-        return post.get().getId();
+        return post.getId();
     }
 
     /** 게시물 삭제 **/
@@ -116,9 +117,9 @@ public class PostService {
 
     /** 제목 키워드 검색 **/
     public List<GetPostsRes> findByTitle(String keyword) throws BaseException {
-        if(keyword.length() < 2) {
-            throw new BaseException(BaseResponseStatus.KEYWORD_TOO_SHORT);
-        }
+//        if(keyword.length() < 2) {
+//            throw new BaseException(BaseResponseStatus.KEYWORD_TOO_SHORT);
+//        }
 
         List<Post> posts = postRepository.findByTitleContaining(keyword);
         List<GetPostsRes> getPostsRes = posts.stream()
