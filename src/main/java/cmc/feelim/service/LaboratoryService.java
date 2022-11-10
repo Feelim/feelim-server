@@ -3,6 +3,7 @@ package cmc.feelim.service;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.laboratory.LaboratoryRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.laboratory.dto.GetLaboratoriesRes;
@@ -98,5 +99,14 @@ public class LaboratoryService {
                 .collect(Collectors.toList());
 
         return getLaboratoriesRes;
+    }
+
+    /** 현상소 삭제 **/
+    public Long delete(Long laboratoryId) throws BaseException {
+        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId)
+                .orElseThrow( () -> new BaseException(BaseResponseStatus.NO_LABORATORY));
+
+        laboratory.changeStatus(Status.DELETED);
+        return laboratory.getId();
     }
 }
