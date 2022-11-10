@@ -9,10 +9,7 @@ import cmc.feelim.domain.laboratory.dto.GetLaboratoriesRes;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
-import cmc.feelim.domain.post.dto.GetPostRes;
-import cmc.feelim.domain.post.dto.GetPostsRes;
-import cmc.feelim.domain.post.dto.PatchPostReq;
-import cmc.feelim.domain.post.dto.PostPostingReq;
+import cmc.feelim.domain.post.dto.*;
 import cmc.feelim.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -169,5 +166,24 @@ public class PostService {
                 .collect(Collectors.toList());
 
         return getPostsRes;
+    }
+
+    @Transactional
+    /** 추천 아티클 설정 **/
+    public Long recommend(Long postId, boolean isRecommended) throws BaseException {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CHECK_POST_ID));
+
+        return post.updateRecommendation(isRecommended);
+    }
+
+    /** 추천 아티클 불러오기 **/
+    public List<GetRecommendationsRes> getArticles() throws BaseException {
+        List<Post> posts = postRepository.findByRecommendation();
+        List<GetRecommendationsRes> recommendationsRes = posts.stream()
+                .map(GetRecommendationsRes::new)
+                .collect(Collectors.toList());
+
+        return recommendationsRes;
     }
 }

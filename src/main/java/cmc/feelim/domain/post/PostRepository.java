@@ -21,4 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p order by p.id DESC")
     List<Post> findAllDesc();
+
+    @Query("select p from Post p where p.recommendation = true")
+    List<Post> findByRecommendation();
 }
