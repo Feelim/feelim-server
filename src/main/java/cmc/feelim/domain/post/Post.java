@@ -1,6 +1,7 @@
 package cmc.feelim.domain.post;
 
 import cmc.feelim.domain.BaseEntity;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.comment.Comment;
 import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.post.dto.PatchPostReq;
@@ -38,7 +39,10 @@ public class Post extends BaseEntity {
     @Column(length = 30)
     private String title;
 
+    @Column(length = 5000)
     private String content;
+
+    private boolean recommendation = false;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
@@ -64,5 +68,18 @@ public class Post extends BaseEntity {
         this.category = patchPostReq.getCategory();
         this.title = patchPostReq.getTitle();
         this.content = patchPostReq.getContent();
+    }
+
+    public Long updateRecommendation(boolean recommendation) {
+        this.recommendation = recommendation;
+        return this.id;
+    }
+
+    public void deleteImages() {
+//        images.removeAll(this.getImages());
+        for(int i = 0; i < images.size(); i++) {
+            images.get(i).changeStatus(Status.DELETED);
+            images.remove(i);
+        }
     }
 }

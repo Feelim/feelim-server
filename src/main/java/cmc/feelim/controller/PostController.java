@@ -66,9 +66,9 @@ public class PostController {
     }
 
     @ApiOperation("제목 검색")
-    @GetMapping("/search/title/{keyword}")
-    public BaseResponse<List<GetPostsRes>> searchByTitle(@PathVariable(name = "keyword") String keyword) throws BaseException {
-        return new BaseResponse<List<GetPostsRes>>(postService.findByTitle(keyword));
+    @GetMapping("/search/title")
+    public BaseResponse<List<GetPostsRes>> searchByTitle(@RequestParam(name = "title") String title) throws BaseException {
+        return new BaseResponse<List<GetPostsRes>>(postService.findByTitle(title));
     }
 
     @ApiOperation("내용 검색")
@@ -87,5 +87,11 @@ public class PostController {
     @GetMapping("/user/commenting")
     public BaseResponse<List<GetPostsRes>> getMyCommentingPosts() throws BaseException {
         return new BaseResponse<List<GetPostsRes>>(postService.getCommentedOnPosts());
+    }
+
+    @ApiOperation("아티클 선정하기")
+    @PatchMapping("/{postId}/recommendation")
+    public BaseResponse<Long> recommendPost(@PathVariable Long postId, @RequestParam boolean isRecommended) throws BaseException {
+        return new BaseResponse<Long>(postService.recommend(postId, isRecommended));
     }
 }

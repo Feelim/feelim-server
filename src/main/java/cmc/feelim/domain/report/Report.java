@@ -32,6 +32,7 @@ public class Report extends BaseEntity {
 
     //신고 내용
     @Enumerated(EnumType.STRING)
+    @Column(length = 1000)
     @NotNull(message = "신고 이유를 선택해주세요.")
     private Reason reason;
 

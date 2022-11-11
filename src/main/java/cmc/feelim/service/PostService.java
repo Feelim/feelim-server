@@ -5,16 +5,15 @@ import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
 import cmc.feelim.domain.Status;
 import cmc.feelim.domain.comment.Comment;
+import cmc.feelim.domain.image.Image;
 import cmc.feelim.domain.laboratory.dto.GetLaboratoriesRes;
 import cmc.feelim.domain.post.Category;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.post.PostRepository;
-import cmc.feelim.domain.post.dto.GetPostRes;
-import cmc.feelim.domain.post.dto.GetPostsRes;
-import cmc.feelim.domain.post.dto.PatchPostReq;
-import cmc.feelim.domain.post.dto.PostPostingReq;
+import cmc.feelim.domain.post.dto.*;
 import cmc.feelim.domain.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,21 +81,21 @@ public class PostService {
     @Transactional
     public Long updatePost(Long postId, PatchPostReq patchPostReq) throws BaseException {
         User user = authService.getUserFromAuth();
-        Optional<Post> post = postRepository.findById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CHECK_POST_ID));
 
-        if(!post.isPresent()) {
-            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
-        }
-
-        if(user != post.get().getUser()) {
+        if(user != post.getUser()) {
             throw new BaseException(BaseResponseStatus.NO_EDIT_RIGHTS);
         }
 
-        if(patchPostReq.getImages() != null) {
-            post.get().updatePost(patchPostReq);
-            post.get().updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post.get()));
+        post.updatePost(patchPostReq);
+
+        if(!patchPostReq.getImages().isEmpty()) {
+            post.updateImage(fileUploadService.uploadImageFromPost(patchPostReq.getImages(), post));
+        } else if(patchPostReq.getImages().isEmpty()) {
+            post.deleteImages();
         }
-        return post.get().getId();
+        return post.getId();
     }
 
     /** 게시물 삭제 **/
@@ -169,5 +168,24 @@ public class PostService {
                 .collect(Collectors.toList());
 
         return getPostsRes;
+    }
+
+    @Transactional
+    /** 추천 아티클 설정 **/
+    public Long recommend(Long postId, boolean isRecommended) throws BaseException {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CHECK_POST_ID));
+
+        return post.updateRecommendation(isRecommended);
+    }
+
+    /** 추천 아티클 불러오기 **/
+    public List<GetRecommendationsRes> getArticles() throws BaseException {
+        List<Post> posts = postRepository.findByRecommendation();
+        List<GetRecommendationsRes> recommendationsRes = posts.stream()
+                .map(GetRecommendationsRes::new)
+                .collect(Collectors.toList());
+
+        return recommendationsRes;
     }
 }

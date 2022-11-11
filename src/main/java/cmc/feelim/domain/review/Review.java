@@ -12,6 +12,8 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,8 +35,12 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "processing_laboratory_id")
     private ProcessingLaboratory laboratory;
 
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
+
     private double star;
 
+    @Column(length = 1000)
     private String content;
 
     public Review(ProcessingLaboratory laboratory, User user, PostReviewReq postReviewReq) {
@@ -44,9 +50,12 @@ public class Review extends BaseEntity {
         this.content = postReviewReq.getContent();
     }
 
-    public Long update(PatchReviewReq patchReviewReq) {
+    public void update(PatchReviewReq patchReviewReq) {
         this.star = patchReviewReq.getStar();
         this.content = patchReviewReq.getContent();
-        return this.id;
+    }
+
+    public void updateImage(List<Image> image) {
+        this.images = image;
     }
 }

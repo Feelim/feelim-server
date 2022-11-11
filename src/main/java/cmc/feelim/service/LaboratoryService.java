@@ -3,6 +3,7 @@ package cmc.feelim.service;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.s3.S3FileUploadService;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.laboratory.LaboratoryRepository;
 import cmc.feelim.domain.laboratory.ProcessingLaboratory;
 import cmc.feelim.domain.laboratory.dto.GetLaboratoriesRes;
@@ -90,13 +91,33 @@ public class LaboratoryService {
     }
 
     /** 이름으로 검색 **/
-    public List<GetLaboratoriesRes> search(String keyword) throws BaseException {
+    public List<GetLaboratoriesRes> search(String keyword, double x, double y) throws BaseException {
         List<ProcessingLaboratory> laboratories = laboratoryRepository.findByNameContaining(keyword);
 
         List<GetLaboratoriesRes> getLaboratoriesRes = laboratories.stream()
                 .map(GetLaboratoriesRes::new)
                 .collect(Collectors.toList());
 
-        return getLaboratoriesRes;
+        //거리 추가
+        for(GetLaboratoriesRes laboratory : getLaboratoriesRes) {
+            double distance = distanceService.getDistance(laboratory.getPoint(), x, y);
+            laboratory.setDistance(distance);
+        }
+
+        //거리순 정렬
+        List<GetLaboratoriesRes> sortedList = getLaboratoriesRes.stream()
+                .sorted(Comparator.comparingDouble(GetLaboratoriesRes::getDistance))
+                .collect(Collectors.toList());
+
+        return sortedList;
+    }
+
+    /** 현상소 삭제 **/
+    public Long delete(Long laboratoryId) throws BaseException {
+        ProcessingLaboratory laboratory = laboratoryRepository.findById(laboratoryId)
+                .orElseThrow( () -> new BaseException(BaseResponseStatus.NO_LABORATORY));
+
+        laboratory.changeStatus(Status.DELETED);
+        return laboratory.getId();
     }
 }
