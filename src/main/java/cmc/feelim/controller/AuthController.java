@@ -44,7 +44,13 @@ public class AuthController {
     String appleKeyId = "54D9T8FD9F";
 
 //    @Value("${apple.key.path}")
-    String appleKeyPath = "apple/AuthKey_54D9T8FD9F.p8";
+//    String appleKeyPath = "apple/AuthKey_54D9T8FD9F.p8";
+    String appleKeyPath = "-----BEGIN PRIVATE KEY-----\n" +
+        "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgm0umbE5gh8CCWAim\n" +
+        "SvggSSXvk6WYhkfzuBQDW/f3M+WgCgYIKoZIzj0DAQehRANCAATsz+zU3dZK9GRP\n" +
+        "uYk2HxwmevkBEUO4jv+3CnJ22T2E1lrtxwLkC6UG0vC6G4dQq+CX2ko0an9yRIFn\n" +
+        "BHlVF5GJ\n" +
+        "-----END PRIVATE KEY-----";
 
     private final AuthService authService;
 
