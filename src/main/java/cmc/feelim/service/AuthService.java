@@ -99,7 +99,7 @@ public class AuthService {
         }
 
         String email = appleUserInfo.getEmail();
-        String name = appleUserInfo.getName().getFirstName();
+        String name = "apple" + numStr;
         String nickname = RandomStringUtils.randomAlphanumeric(8);
         String pwd = RandomStringUtils.randomAlphanumeric(45);
 
