@@ -1,15 +1,13 @@
 package cmc.feelim.controller;
 
-import cmc.feelim.config.auth.dto.AppleLoginReq;
-import cmc.feelim.config.auth.dto.LoginRes;
-import cmc.feelim.config.auth.dto.OAuthResponse;
-import cmc.feelim.config.auth.dto.TokenDto;
+import cmc.feelim.config.auth.dto.*;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponse;
 import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.service.AuthService;
 import cmc.feelim.utils.AppleLoginUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -82,7 +80,7 @@ public class AuthController {
     // 애플 연동정보 조회
 //    @RequestMapping(value = "/login/oauth2/apple", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @RequestMapping(value = "/login/oauth2/apple")
-    public BaseResponse<LoginRes> oauthApple(HttpServletRequest request, @RequestParam(value = "code") String code, HttpServletResponse response) throws Exception, BaseException {
+    public BaseResponse<LoginRes> oauthApple(String user, HttpServletRequest request, @RequestParam(value = "code") String code, HttpServletResponse response) throws Exception, BaseException {
 
         String clientId = appleClientId;
         String clientSecret = AppleLoginUtil.createClientSecret(appleTeamId, appleClientId, appleKeyId, appleKeyPath, appleAuthUrl);
@@ -96,9 +94,18 @@ public class AuthController {
         tokenRequest.put("grant_type", "authorization_code");
         String apiResponse = AppleLoginUtil.doPost(reqUrl, tokenRequest);
 
-
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JSONObject tokenResponse = objectMapper.readValue(apiResponse, JSONObject.class);
+
+        AppleUserInfo appleUserInfo = new AppleUserInfo();
+
+        if(user != null) {
+            appleUserInfo = objectMapper.readValue(user, AppleUserInfo.class);
+            System.out.println(appleUserInfo.getEmail());
+            System.out.println(appleUserInfo.getName().getFirstName());
+            System.out.println(appleUserInfo.getName().getLastName());
+        }
 
         // 애플 정보조회 성공
         if (tokenResponse.get("error") == null ) {
@@ -114,7 +121,7 @@ public class AuthController {
 
             AppleLoginReq appleLoginReq = new AppleLoginReq(appleUniqueNo, email);
 
-            return new BaseResponse<LoginRes>(authService.appleLogin(appleLoginReq));
+            return new BaseResponse<LoginRes>(authService.appleLogin(appleUserInfo));
 
             // 애플 정보조회 실패
         } else {
