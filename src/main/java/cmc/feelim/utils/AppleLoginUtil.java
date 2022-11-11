@@ -53,8 +53,9 @@ public class AppleLoginUtil {
         SignedJWT jwt = new SignedJWT(header, claimsSet);
 
         try {
-            ECPrivateKey ecPrivateKey = new ECPrivateKeyImpl(readPrivateKey(keyPath));
-            JWSSigner jwsSigner = new ECDSASigner(ecPrivateKey.getS());
+//            ECPrivateKey ecPrivateKey = new ECPrivateKeyImpl(readPrivateKey(keyPath));
+            ECPrivateKey ecPrivateKey1 = new ECPrivateKeyImpl(keyPath);
+            JWSSigner jwsSigner = new ECDSASigner(ecPrivateKey1.getS());
 
             jwt.sign(jwsSigner);
 
