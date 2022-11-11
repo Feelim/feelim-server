@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import sun.security.ec.ECPrivateKeyImpl;
 import net.sf.json.JSONObject;
 
 import java.io.*;
