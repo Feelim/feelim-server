@@ -6,9 +6,11 @@ import cmc.feelim.config.exception.BaseResponse;
 import cmc.feelim.config.exception.RefineError;
 import cmc.feelim.domain.order.dto.GetOrderRes;
 import cmc.feelim.domain.order.dto.GetOrdersRes;
+import cmc.feelim.domain.post.dto.GetRecommendationsRes;
 import cmc.feelim.domain.user.dto.GetProfileRes;
 import cmc.feelim.domain.user.dto.PatchProfileReq;
 import cmc.feelim.service.OrderService;
+import cmc.feelim.service.PostService;
 import cmc.feelim.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,13 @@ public class HomeController {
 
     private final UserService userService;
     private final OrderService orderService;
+    private final PostService postService;
+
+    @ApiOperation("기본 홈")
+    @GetMapping("/chalkak")
+    public BaseResponse<List<GetRecommendationsRes>> getArticles() throws BaseException {
+        return new BaseResponse<List<GetRecommendationsRes>>(postService.getArticles());
+    }
 
     @ApiOperation("사용자 프로필")
     @GetMapping("/my-page")

@@ -21,7 +21,9 @@ public class GetLaboratoryRes {
     private List<String> bills = new ArrayList<>();
     private String profile;
     private String background;
-    private String url;
+    private String homepage;
+    private String instagram;
+    private String blog;
     private List<GetReviewRes> reviews;
     private int reviewNum;
     private double star;
@@ -31,7 +33,9 @@ public class GetLaboratoryRes {
         this.id = laboratory.getId();
         this.name = laboratory.getName();
         this.phone = laboratory.getPhone();
-        this.url = laboratory.getHomepage();
+        this.homepage = laboratory.getHomepage();
+        this.instagram = laboratory.getInstagram();
+        this.blog = laboratory.getBlog();
         this.reviews = laboratory.getReviews().stream()
                 .map(GetReviewRes::new)
                 .collect(Collectors.toList());

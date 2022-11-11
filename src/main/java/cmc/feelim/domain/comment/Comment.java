@@ -29,6 +29,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Column(length = 1000)
     private String content;
 
     public Comment(User user, Post post, PostCommentReq postCommentReq) {
