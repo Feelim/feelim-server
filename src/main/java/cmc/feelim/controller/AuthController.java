@@ -79,7 +79,8 @@ public class AuthController {
     }
 
     // 애플 연동정보 조회
-    @RequestMapping(value = "/login/oauth2/apple", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+//    @RequestMapping(value = "/login/oauth2/apple", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value = "/login/oauth2/apple")
     public BaseResponse<LoginRes> oauthApple(HttpServletRequest request, @RequestParam(value = "code") String code, HttpServletResponse response) throws Exception, BaseException {
 
         String clientId = appleClientId;
