@@ -1,6 +1,7 @@
 package cmc.feelim.service;
 
 import cmc.feelim.config.auth.dto.AppleLoginReq;
+import cmc.feelim.config.auth.dto.AppleUserInfo;
 import cmc.feelim.config.auth.dto.LoginRes;
 import cmc.feelim.config.auth.dto.TokenDto;
 import cmc.feelim.config.exception.BaseException;
@@ -88,7 +89,7 @@ public class AuthService {
     }
 
     @Transactional
-    public LoginRes appleLogin(AppleLoginReq appleLoginReq) throws JsonProcessingException {
+    public LoginRes appleLogin(AppleUserInfo appleUserInfo) throws JsonProcessingException {
         Random random = new Random();
         String numStr = "";
 
@@ -97,8 +98,8 @@ public class AuthService {
             numStr += ran;
         }
 
-        String email = appleLoginReq.getEmail();
-        String name = "apple" + numStr;
+        String email = appleUserInfo.getEmail();
+        String name = appleUserInfo.getName().getFirstName();
         String nickname = RandomStringUtils.randomAlphanumeric(8);
         String pwd = RandomStringUtils.randomAlphanumeric(45);
 
