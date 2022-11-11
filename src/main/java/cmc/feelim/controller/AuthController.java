@@ -65,7 +65,7 @@ public class AuthController {
     @ApiOperation(value = "애플 로그인")
     @PostMapping("/auth/apple-login")
     public BaseResponse<LoginRes> appleLogin(@RequestBody AppleLoginReq appleLoginReq) throws JsonProcessingException {
-        return new BaseResponse<>(authService.appleLogin(appleLoginReq));
+        return new BaseResponse<>(authService.appleLogin1(appleLoginReq));
     }
 
     // 애플 로그인 호출
