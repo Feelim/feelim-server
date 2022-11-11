@@ -26,8 +26,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import sun.security.ec.ECPrivateKeyImpl;
 import net.sf.json.JSONObject;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.interfaces.ECPrivateKey;
 import java.util.*;
@@ -63,18 +63,32 @@ public class AppleLoginUtil {
             e.printStackTrace();
         } catch (JOSEException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return jwt.serialize();
     }
 
 
-    private static byte[] readPrivateKey(String keyPath) {
+    private static byte[] readPrivateKey(String keyPath) throws IOException {
 
         Resource resource = new ClassPathResource(keyPath);
+        InputStream is = resource.getInputStream();
+        File numberFile = File.createTempFile("apple", ".p8");
+
+        try (FileOutputStream fos = new FileOutputStream(numberFile)) {
+            int read;
+            byte[] bytes = new byte[1024];
+
+            while ((read = is.read(bytes)) != -1) {
+                fos.write(bytes, 0, read);
+            }
+        }
+
         byte[] content = null;
 
-        try (FileReader keyReader = new FileReader(resource.getFile());
+        try (FileReader keyReader = new FileReader(numberFile);
              PemReader pemReader = new PemReader(keyReader)) {
             {
                 PemObject pemObject = pemReader.readPemObject();
