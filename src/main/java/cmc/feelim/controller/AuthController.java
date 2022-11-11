@@ -114,16 +114,16 @@ public class AuthController {
             //  회원 고유 식별자
             String appleUniqueNo = payload.getString("sub");
             System.out.println("appleUniqueNo + " + appleUniqueNo + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//            String email = payload.getString("email");
-//            System.out.println("email + " + email + "!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            String email = payload.getString("email");
+            System.out.println("email + " + email + "!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             /**
              TO DO : 리턴받은 appleUniqueNo 해당하는 회원정보 조회 후 로그인 처리 후 메인으로 이동
              **/
 
-            AppleLoginReq appleLoginReq = new AppleLoginReq(appleUniqueNo, payload.getString("email"));
+            AppleLoginReq appleLoginReq = new AppleLoginReq(appleUniqueNo, email);
 
-            return new BaseResponse<LoginRes>(authService.appleLogin1(appleLoginReq));
+            return new BaseResponse<LoginRes>(authService.appleLogin(appleLoginReq));
 
             // 애플 정보조회 실패
         } else {
