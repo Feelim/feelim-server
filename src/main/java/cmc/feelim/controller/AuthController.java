@@ -111,9 +111,11 @@ public class AuthController {
         if (tokenResponse.get("error") == null ) {
             JSONObject payload = AppleLoginUtil.decodeFromIdToken(tokenResponse.getString("id_token"));
 
+            System.out.println(payload + "!!!!!!!!!!!!!!!!!!!!!!");
+
             String email = payload.getString("email");
             System.out.println("email + " + email + "!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            
+
             //  회원 고유 식별자
             String appleUniqueNo = payload.getString("sub");
             System.out.println("appleUniqueNo + " + appleUniqueNo + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
