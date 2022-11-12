@@ -101,8 +101,9 @@ public class AuthController {
         AppleUserInfo appleUserInfo = new AppleUserInfo();
 
         if(user != null) {
+            System.out.println("유저 있음 !!!!!!!!!!!!!!!!!!!");
             appleUserInfo = objectMapper.readValue(user, AppleUserInfo.class);
-            System.out.println(appleUserInfo.getEmail());
+            System.out.println("user email " + appleUserInfo.getEmail() + "!!!!!!!!!!!!!!!!!!!!");
             System.out.println(appleUserInfo.getName().getFirstName());
             System.out.println(appleUserInfo.getName().getLastName());
         }
