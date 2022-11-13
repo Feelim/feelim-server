@@ -89,7 +89,7 @@ public class AuthService {
     }
 
     @Transactional
-    public LoginRes appleLogin(AppleLoginReq appleLoginReq) throws JsonProcessingException {
+    public LoginRes appleLogin(String appleUniqueNo) throws JsonProcessingException {
         Random random = new Random();
         String numStr = "";
 
@@ -98,13 +98,13 @@ public class AuthService {
             numStr += ran;
         }
 
-        String email = appleLoginReq.getEmail();
+        String email = "apple@" + numStr;
         String name = "apple" + numStr;
         String nickname = RandomStringUtils.randomAlphanumeric(8);
         String pwd = RandomStringUtils.randomAlphanumeric(45);
 
         // 로그인
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByAppleUniqueNo(appleUniqueNo)
                 .orElse(User.create(email, name, nickname, pwd));
 
         userRepository.save(user);
