@@ -106,6 +106,8 @@ public class AuthController {
             System.out.println("user email " + appleUserInfo.getEmail() + "!!!!!!!!!!!!!!!!!!!!");
             System.out.println(appleUserInfo.getName().getFirstName());
             System.out.println(appleUserInfo.getName().getLastName());
+        } else {
+            System.out.println("유저 정보 못 읽어옴 !!!!!!!!!!!!!1");
         }
 
         // 애플 정보조회 성공
