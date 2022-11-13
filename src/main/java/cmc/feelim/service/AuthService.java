@@ -91,7 +91,7 @@ public class AuthService {
             numStr += ran;
         }
 
-        String email = RandomStringUtils.random(5) + numStr + "@apple";
+        String email = RandomStringUtils.random(5) + numStr + "@apple.com";
         String name = "apple" + numStr;
         String nickname = RandomStringUtils.randomAlphanumeric(8);
         String pwd = RandomStringUtils.randomAlphanumeric(45);
