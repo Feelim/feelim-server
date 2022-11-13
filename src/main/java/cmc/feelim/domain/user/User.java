@@ -64,6 +64,9 @@ public class User extends BaseEntity {
     @Column(nullable = true, unique = true)
     private String fcmToken;
 
+    @Column(length = 70, unique = true)
+    private String appleUniqueNo;
+
     @OneToMany
     private List<Image> images = new ArrayList<>();
 
