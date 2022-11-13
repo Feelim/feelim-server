@@ -18,7 +18,7 @@ public class RefreshToken extends BaseEntity {
     @Column(name = "refresh_token_id")
     private Long id;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
     private String token;
 
