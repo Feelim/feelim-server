@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Random;
 
@@ -91,7 +92,7 @@ public class AuthService {
             numStr += ran;
         }
 
-        String email = RandomStringUtils.randomAlphanumeric(5) + numStr + "@apple.com";
+        String email = RandomStringUtils.randomAlphanumeric(5).toLowerCase(Locale.ROOT) + numStr + "@apple.com";
         System.out.println(email + "!!!!!!!!!!!!!!");
         String name = "apple" + numStr;
         String nickname = RandomStringUtils.randomAlphanumeric(8);
