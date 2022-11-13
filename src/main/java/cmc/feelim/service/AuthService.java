@@ -93,12 +93,12 @@ public class AuthService {
         Random random = new Random();
         String numStr = "";
 
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < 10; j++) {
             String ran = Integer.toString(random.nextInt(10));
             numStr += ran;
         }
 
-        String email = "apple@" + numStr;
+        String email = RandomStringUtils.random(5) + numStr + "@apple";
         String name = "apple" + numStr;
         String nickname = RandomStringUtils.randomAlphanumeric(8);
         String pwd = RandomStringUtils.randomAlphanumeric(45);
