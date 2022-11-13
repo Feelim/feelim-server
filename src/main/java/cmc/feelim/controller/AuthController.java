@@ -9,12 +9,14 @@ import cmc.feelim.utils.AppleLoginUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -137,5 +139,11 @@ public class AuthController {
             throw new BaseException(BaseResponseStatus.APPLE_FAIL);
         }
 
+    }
+
+    @ApiOperation("회원 삭제")
+    @DeleteMapping("/user/delete")
+    public BaseResponse<Long> deleteUser(@RequestParam Long userId) {
+        return new BaseResponse<Long>(authService.deleteUser(userId));
     }
 }
