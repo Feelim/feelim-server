@@ -110,8 +110,8 @@ public class AuthService {
         userRepository.save(user);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), "", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-
-        TokenDto token = tokenProvider.createSocialJwt(auth.getName());
+        System.out.println("auth.getName: " + auth.getName() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
+        TokenDto token = tokenProvider.createSocialJwt((auth.getName()));
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
