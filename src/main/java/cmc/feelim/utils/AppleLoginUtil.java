@@ -153,6 +153,8 @@ public class AppleLoginUtil {
             ReadOnlyJWTClaimsSet getPayload = signedJWT.getJWTClaimsSet();
             ObjectMapper objectMapper = new ObjectMapper();
             JSONObject payload = objectMapper.readValue(getPayload.toJSONObject().toJSONString(), JSONObject.class);
+            String appleInfo = getPayload.toJSONObject().toJSONString();
+            System.out.println("appleInfo: " + appleInfo + "!!!!!!!!!!!!!!!!!!!!!!");
 
             if (payload != null) {
                 return payload;
