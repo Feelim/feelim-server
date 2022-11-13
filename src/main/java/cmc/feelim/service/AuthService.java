@@ -111,7 +111,7 @@ public class AuthService {
 
         Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), "", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
         System.out.println("auth.getName: " + auth.getName() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
-        TokenDto token = tokenProvider.createSocialJwt(email);
+        TokenDto token = tokenProvider.createSocialJwt(user.getEmail());
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
