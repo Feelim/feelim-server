@@ -11,6 +11,7 @@ import cmc.feelim.domain.order.Order;
 import cmc.feelim.domain.post.Post;
 import cmc.feelim.domain.report.Report;
 import cmc.feelim.domain.review.Review;
+import cmc.feelim.domain.token.RefreshToken;
 import cmc.feelim.domain.user.dto.PatchProfileReq;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,6 +68,8 @@ public class User extends BaseEntity {
     @Column(length = 70, unique = true)
     private String appleUniqueNo;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private RefreshToken refreshToken;
     @OneToMany
     private List<Image> images = new ArrayList<>();
 
