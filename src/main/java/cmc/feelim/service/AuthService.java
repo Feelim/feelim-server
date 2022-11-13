@@ -1,7 +1,6 @@
 package cmc.feelim.service;
 
 import cmc.feelim.config.auth.dto.AppleLoginReq;
-import cmc.feelim.config.auth.dto.AppleUserInfo;
 import cmc.feelim.config.auth.dto.LoginRes;
 import cmc.feelim.config.auth.dto.TokenDto;
 import cmc.feelim.config.exception.BaseException;
@@ -62,14 +61,8 @@ public class AuthService {
         //Access Token에서 Member Id 가져오기
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
 
-        Optional<User> user = userRepository.findByEmail(authentication.getName());
-//                .orElseThrow(() -> {
-//                    try {
-//                        throw new BaseException(INVALID_EMAIL);
-//                    } catch (BaseException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                });
+        User user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new BaseException(INVALID_EMAIL));
 
         //저장소에서 memberID 기반으로 refresh token 값 가져오기
         RefreshToken token = refreshTokenRepository.findByUser(user)
@@ -165,14 +158,26 @@ public class AuthService {
                 .token(token.getRefreshToken())
                 .build();
 
-        refreshTokenRepository.save(refreshToken);
+        if(refreshTokenRepository.findByUser(user).isPresent()){
+            Optional<RefreshToken> refreshTokenByUser = refreshTokenRepository.findByUser(user);
+            refreshTokenByUser.get().updateToken(refreshToken.getToken());
+        } else {
+            refreshTokenRepository.save(refreshToken);
+        }
 
         return LoginRes.builder()
                 .grantType(token.getGrantType())
                 .accessToken(token.getAccessToken())
-                .refreshToken(token.getRefreshToken())
+                .refreshToken(refreshToken.getToken())
                 .accessTokenExpiresIn(token.getAccessTokenExpiresIn())
                 .role(user.getRole().name())
                 .build();
+    }
+
+    @Transactional
+    public Long deleteUser(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        userRepository.delete(user.get());
+        return user.get().getId();
     }
 }

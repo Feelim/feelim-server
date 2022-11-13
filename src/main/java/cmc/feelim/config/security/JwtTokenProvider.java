@@ -1,6 +1,8 @@
 package cmc.feelim.config.security;
 
 import cmc.feelim.config.auth.dto.TokenDto;
+import cmc.feelim.config.exception.BaseException;
+import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.domain.token.RefreshToken;
 import cmc.feelim.domain.token.RefreshTokenRepository;
 import cmc.feelim.domain.user.Role;
@@ -138,8 +140,8 @@ public class JwtTokenProvider {
 
         RefreshToken refresh = new RefreshToken(user.get(), refreshToken);
 
-        if(refreshTokenRepository.findByUser(user).isPresent()){
-            Optional<RefreshToken> refreshTokenByUser = refreshTokenRepository.findByUser(user);
+        if(refreshTokenRepository.findByUser(user.get()).isPresent()){
+            Optional<RefreshToken> refreshTokenByUser = refreshTokenRepository.findByUser(user.get());
             refreshTokenByUser.get().updateToken(refresh.getToken());
         } else {
             refreshTokenRepository.save(refresh);
