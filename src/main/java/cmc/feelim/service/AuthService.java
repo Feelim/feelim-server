@@ -105,7 +105,7 @@ public class AuthService {
 
         // 로그인
         User user = userRepository.findByAppleUniqueNo(appleUniqueNo)
-                .orElse(User.create(email, name, nickname, pwd));
+                .orElse(User.createApple(email, name, nickname, pwd, appleUniqueNo));
 
         userRepository.save(user);
 

@@ -100,13 +100,14 @@ public class User extends BaseEntity {
     private List<Order> orders = new ArrayList<>();
 
     @Builder
-    public User (String email, String phone, String pwd, String nickname, String name) {
+    public User (String email, String phone, String pwd, String nickname, String name, String appleUniqueNo) {
         this.email = email;
         this.phone = phone;
         this.pwd = pwd;
         this.nickname = nickname;
         this.name = name;
         this.role = Role.USER;
+        this.appleUniqueNo = appleUniqueNo;
     }
 
     public static User create(String email, String name, String nickname, String pwd) {
@@ -115,6 +116,16 @@ public class User extends BaseEntity {
                 .name(name)
                 .nickname(nickname)
                 .pwd(pwd)
+                .build();
+    }
+
+    public static User createApple(String email, String name, String nickname, String pwd, String appleUniqueNo) {
+        return User.builder()
+                .email(email)
+                .name(name)
+                .nickname(nickname)
+                .pwd(pwd)
+                .appleUniqueNo(appleUniqueNo)
                 .build();
     }
 
