@@ -155,22 +155,22 @@ public class AuthService {
 
         TokenDto token = tokenProvider.createSocialJwt(auth.getName());
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .user(user)
-                .token(token.getRefreshToken())
-                .build();
+//        RefreshToken refreshToken = RefreshToken.builder()
+//                .user(user)
+//                .token(token.getRefreshToken())
+//                .build();
 
-        if(refreshTokenRepository.findByUser(user).isPresent()){
-            Optional<RefreshToken> refreshTokenByUser = refreshTokenRepository.findByUser(user);
-            refreshTokenByUser.get().updateToken(refreshToken.getToken());
-        } else {
-            refreshTokenRepository.save(refreshToken);
-        }
+//        if(refreshTokenRepository.findByUser(user).isPresent()){
+//            Optional<RefreshToken> refreshTokenByUser = refreshTokenRepository.findByUser(user);
+//            refreshTokenByUser.get().updateToken(refreshToken.getToken());
+//        } else {
+//            refreshTokenRepository.save(refreshToken);
+//        }
 
         return LoginRes.builder()
                 .grantType(token.getGrantType())
                 .accessToken(token.getAccessToken())
-                .refreshToken(refreshToken.getToken())
+                .refreshToken(token.getRefreshToken())
                 .accessTokenExpiresIn(token.getAccessTokenExpiresIn())
                 .role(user.getRole().name())
                 .build();
