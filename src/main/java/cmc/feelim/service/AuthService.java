@@ -86,12 +86,12 @@ public class AuthService {
         Random random = new Random();
         String numStr = "";
 
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 3; j++) {
             String ran = Integer.toString(random.nextInt(10));
             numStr += ran;
         }
 
-        String email = numStr + "@apple.com";
+        String email = RandomStringUtils.randomAlphanumeric(5) + numStr + "@apple.com";
         System.out.println(email + "!!!!!!!!!!!!!!");
         String name = "apple" + numStr;
         String nickname = RandomStringUtils.randomAlphanumeric(8);
