@@ -41,7 +41,7 @@ public class LaboratoryController {
 
     @ApiOperation("주변 현상소 거리순")
     @GetMapping("/nearby")
-    public BaseResponse<List<GetLaboratoriesRes>> getByDistance(@RequestParam double x, double y) throws BaseException {
+    public BaseResponse<List<GetLaboratoriesRes>> getByDistance(@RequestParam(name = "x", defaultValue = "37.5916") double x, @RequestParam(name = "y", defaultValue = "127.0222") double y) throws BaseException {
         return new BaseResponse<>(laboratoryService.findByDistance(x, y));
     }
 
