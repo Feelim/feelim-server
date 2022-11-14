@@ -158,9 +158,12 @@ public class AuthService {
     }
 
     @Transactional
-    public Long deleteUser(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        userRepository.delete(user.get());
-        return user.get().getId();
+    public Long deleteUser() throws BaseException {
+        User user = getUserFromAuth();
+        RefreshToken refreshToken = refreshTokenRepository.findByUser(user)
+                .orElseThrow(() -> new BaseException(INVALID_JWT));
+        refreshTokenRepository.delete(refreshToken);
+        userRepository.delete(user);
+        return user.getId();
     }
 }
