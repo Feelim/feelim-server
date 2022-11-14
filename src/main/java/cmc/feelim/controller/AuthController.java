@@ -28,7 +28,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @ComponentScan(basePackages = {"cmc/feelim/controller"})
 public class AuthController {
-    @Value("${apple.auth-url}")
+    @Value("${apple.auth.url}")
     String appleAuthUrl;
 
     @Value("${apple.auth.redirect-uri}")
