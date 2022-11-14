@@ -141,8 +141,8 @@ public class AuthController {
     }
 
     @ApiOperation("회원 삭제")
-    @DeleteMapping("/user/delete")
-    public BaseResponse<Long> deleteUser(@RequestParam Long userId) {
-        return new BaseResponse<Long>(authService.deleteUser(userId));
+    @DeleteMapping("/user/deletion")
+    public BaseResponse<Long> deleteUser() throws BaseException {
+        return new BaseResponse<Long>(authService.deleteUser());
     }
 }
