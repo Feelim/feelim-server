@@ -6,6 +6,7 @@ import cmc.feelim.config.auth.dto.TokenDto;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.security.JwtTokenProvider;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.token.RefreshToken;
 import cmc.feelim.domain.token.RefreshTokenRepository;
 import cmc.feelim.domain.user.User;
@@ -158,9 +159,12 @@ public class AuthService {
     }
 
     @Transactional
-    public Long deleteUser(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        userRepository.delete(user.get());
-        return user.get().getId();
+    public Long deleteUser() throws BaseException {
+        User user = getUserFromAuth();
+        RefreshToken refreshToken = refreshTokenRepository.findByUser(user)
+                .orElseThrow(() -> new BaseException(INVALID_JWT));
+        refreshTokenRepository.delete(refreshToken);
+        user.changeStatus(Status.DELETED);
+        return user.getId();
     }
 }
