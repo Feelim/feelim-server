@@ -30,7 +30,7 @@ public class CommentController {
     }
 
     @ApiOperation("댓글 삭제")
-    @DeleteMapping("/{commentId}")
+    @PatchMapping("/{commentId}")
     public BaseResponse<Long> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) throws BaseException {
         return new BaseResponse<Long>(commentService.delete(commentId));
     }
