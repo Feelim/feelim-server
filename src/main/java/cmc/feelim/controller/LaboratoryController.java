@@ -53,7 +53,7 @@ public class LaboratoryController {
 
     @Transactional
     @ApiOperation("현상소 삭제")
-    @DeleteMapping("/{laboratoryId}/delete")
+    @PatchMapping("/{laboratoryId}/delete")
     public BaseResponse<Long> delete(@PathVariable Long laboratoryId) throws BaseException {
         return new BaseResponse<Long>(laboratoryService.delete(laboratoryId));
     }
