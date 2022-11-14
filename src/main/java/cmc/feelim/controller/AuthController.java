@@ -28,24 +28,23 @@ import java.util.Map;
 @RequiredArgsConstructor
 @ComponentScan(basePackages = {"cmc/feelim/controller"})
 public class AuthController {
-//    @Value("${apple.auth-url}")
-    String appleAuthUrl = "https://appleid.apple.com";
+    @Value("${apple.auth-url}")
+    String appleAuthUrl;
 
-//    @Value("${apple.redirect-uri}")
-    String redirectUri = "https://www.chalkak.shop/login/oauth2/apple";
+    @Value("${apple.auth.redirect-uri}")
+    String redirectUri;
 
-//    @Value("${apple.client-id}")
-    String appleClientId = "com.chalkak.services";
+    @Value("${apple.auth.client-id}")
+    String appleClientId;
 
-//    @Value("${apple.team.id}")
-    String appleTeamId = "3AQ2WDVH35";
+    @Value("${apple.auth.team-id}")
+    String appleTeamId;
 
-//    @Value("${apple.key.id}")
-    String appleKeyId = "54D9T8FD9F";
+    @Value("${apple.auth.key-id}")
+    String appleKeyId;
 
     @Value("${apple.auth.key-path}")
     String appleKeyPath;
-//    String appleKeyPath = "src/main/resources/apple/AuthKey_54D9T8FD9F.p8;
 
     private final AuthService authService;
 
