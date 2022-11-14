@@ -6,6 +6,7 @@ import cmc.feelim.config.auth.dto.TokenDto;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
 import cmc.feelim.config.security.JwtTokenProvider;
+import cmc.feelim.domain.Status;
 import cmc.feelim.domain.token.RefreshToken;
 import cmc.feelim.domain.token.RefreshTokenRepository;
 import cmc.feelim.domain.user.User;
@@ -163,7 +164,7 @@ public class AuthService {
         RefreshToken refreshToken = refreshTokenRepository.findByUser(user)
                 .orElseThrow(() -> new BaseException(INVALID_JWT));
         refreshTokenRepository.delete(refreshToken);
-        userRepository.delete(user);
+        user.changeStatus(Status.DELETED);
         return user.getId();
     }
 }
