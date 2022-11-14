@@ -32,7 +32,7 @@ public class ReviewController {
     }
 
     @ApiOperation("후기 수정")
-    @PatchMapping("/{reviewId}/modifying")
+    @PatchMapping("/{reviewId}/modification")
     public BaseResponse<Long> modify(@PathVariable Long laboratoryId, @PathVariable Long reviewId, @ModelAttribute @Validated PatchReviewReq patchReviewReq, Errors errors) throws BaseException, IOException {
 
         if(errors.hasErrors()) {
@@ -43,7 +43,7 @@ public class ReviewController {
     }
 
     @ApiOperation("후기 삭제")
-    @PatchMapping("/{reviewId}/delete")
+    @PatchMapping("/{reviewId}/deletion")
     public BaseResponse<Long> delete(@PathVariable Long laboratoryId, @PathVariable Long reviewId) throws BaseException {
         return new BaseResponse<Long>(reviewService.delete(laboratoryId, reviewId));
     }
