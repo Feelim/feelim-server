@@ -60,7 +60,7 @@ public class PostController {
     }
 
     @ApiOperation("게시물 삭제")
-    @DeleteMapping("/{postId}")
+    @PatchMapping("/{postId}")
     public BaseResponse<Long> deletePost(@PathVariable(name = "postId") Long postId) throws BaseException {
         return new BaseResponse<Long>(postService.deletePost(postId));
     }

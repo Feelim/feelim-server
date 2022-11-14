@@ -43,7 +43,7 @@ public class ReviewController {
     }
 
     @ApiOperation("후기 삭제")
-    @DeleteMapping("/{reviewId}/delete")
+    @PatchMapping("/{reviewId}/delete")
     public BaseResponse<Long> delete(@PathVariable Long laboratoryId, @PathVariable Long reviewId) throws BaseException {
         return new BaseResponse<Long>(reviewService.delete(laboratoryId, reviewId));
     }
