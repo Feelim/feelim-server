@@ -81,7 +81,7 @@ public class AuthController {
     // 애플 연동정보 조회
 //    @RequestMapping(value = "/login/oauth2/apple", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @RequestMapping(value = "/login/oauth2/apple")
-    public BaseResponse<LoginRes> oauthApple(String user, HttpServletRequest request, @RequestParam(value = "code") String code, HttpServletResponse response) throws Exception, BaseException {
+    public BaseResponse<OAuthResponse> oauthApple(String user, HttpServletRequest request, @RequestParam(value = "code") String code, HttpServletResponse response) throws Exception, BaseException {
 
         String clientId = appleClientId;
         String clientSecret = AppleLoginUtil.createClientSecret(appleTeamId, appleClientId, appleKeyId, appleKeyPath, appleAuthUrl);
@@ -131,7 +131,7 @@ public class AuthController {
 
 //            AppleLoginReq appleLoginReq = new AppleLoginReq(appleUniqueNo, email);
 
-            return new BaseResponse<LoginRes>(authService.appleLogin(appleUniqueNo));
+            return new BaseResponse<>(authService.appleLogin(appleUniqueNo));
 
             // 애플 정보조회 실패
         } else {
