@@ -2,6 +2,7 @@ package cmc.feelim.service;
 
 import cmc.feelim.config.auth.dto.AppleLoginReq;
 import cmc.feelim.config.auth.dto.LoginRes;
+import cmc.feelim.config.auth.dto.OAuthResponse;
 import cmc.feelim.config.auth.dto.TokenDto;
 import cmc.feelim.config.exception.BaseException;
 import cmc.feelim.config.exception.BaseResponseStatus;
@@ -84,7 +85,7 @@ public class AuthService {
     }
 
     @Transactional
-    public LoginRes appleLogin(String appleUniqueNo) throws JsonProcessingException {
+    public OAuthResponse appleLogin(String appleUniqueNo) throws JsonProcessingException {
         Random random = new Random();
         String numStr = "";
 
@@ -109,13 +110,7 @@ public class AuthService {
         System.out.println("auth.getName: " + auth.getName() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
         TokenDto token = tokenProvider.createSocialJwt(user.getEmail());
 
-        return LoginRes.builder()
-                .grantType(token.getGrantType())
-                .accessToken(token.getAccessToken())
-                .refreshToken(token.getRefreshToken())
-                .accessTokenExpiresIn(token.getAccessTokenExpiresIn())
-                .role(user.getRole().name())
-                .build();
+        return new OAuthResponse(user.getId(), token.getAccessToken(), token.getRefreshToken(), token.getAccessTokenExpiresIn(), user.getRole().name());
     }
 
     @Transactional
