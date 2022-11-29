@@ -94,4 +94,10 @@ public class PostController {
     public BaseResponse<Long> recommendPost(@PathVariable Long postId, @RequestParam boolean isRecommended) throws BaseException {
         return new BaseResponse<Long>(postService.recommend(postId, isRecommended));
     }
+
+    @ApiOperation("관리자 삭제")
+    @PatchMapping("/{postId}/manager-deletion")
+    public BaseResponse<Long> delete(@PathVariable(name = "postId") Long postId) throws BaseException {
+        return new BaseResponse<Long>(postService.mangerDelete(postId));
+    }
 }
