@@ -114,46 +114,6 @@ public class AuthService {
     }
 
     @Transactional
-    public LoginRes appleLogin1(AppleLoginReq appleLoginReq) throws JsonProcessingException {
-        //토큰 복호화
-        int i = appleLoginReq.getToken().lastIndexOf('.');
-        String withoutSignature = appleLoginReq.getToken().substring(0, i+1);
-        Jwt<Header, Claims> untrusted = Jwts.parser().parseClaimsJwt(withoutSignature);
-
-        Random random = new Random();
-        String numStr = "";
-
-        for (int j = 0; j < 3; j++) {
-            String ran = Integer.toString(random.nextInt(10));
-            numStr += ran;
-        }
-
-        String email = (String) untrusted.getBody().get("email");
-//        String email = appleLoginReq.getEmail();
-        String name = "apple" + numStr;
-        String nickname = RandomStringUtils.randomAlphanumeric(8);
-        String pwd = RandomStringUtils.randomAlphanumeric(45);
-
-        // 로그인
-        User user = userRepository.findByEmail(email)
-                .orElse(User.create(email, name, nickname, pwd));
-
-        userRepository.save(user);
-
-        Authentication auth = new UsernamePasswordAuthenticationToken(user.getId(), "", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-
-        TokenDto token = tokenProvider.createSocialJwt(auth.getName());
-
-        return LoginRes.builder()
-                .grantType(token.getGrantType())
-                .accessToken(token.getAccessToken())
-                .refreshToken(token.getRefreshToken())
-                .accessTokenExpiresIn(token.getAccessTokenExpiresIn())
-                .role(user.getRole().name())
-                .build();
-    }
-
-    @Transactional
     public Long deleteUser() throws BaseException {
         User user = getUserFromAuth();
         RefreshToken refreshToken = refreshTokenRepository.findByUser(user)
