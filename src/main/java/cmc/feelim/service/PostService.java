@@ -188,4 +188,16 @@ public class PostService {
 
         return recommendationsRes;
     }
+
+    @Transactional
+    public Long mangerDelete(Long postId) throws BaseException {
+        Optional<Post> post = postRepository.findById(postId);
+
+        if(!post.isPresent()) {
+            throw new BaseException(BaseResponseStatus.CHECK_POST_ID);
+        }
+
+        post.get().changeStatus(Status.DELETED);
+        return post.get().getId();
+    }
 }
