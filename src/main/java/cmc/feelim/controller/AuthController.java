@@ -62,12 +62,6 @@ public class AuthController {
         return new BaseResponse<>(authService.reissueToken(accessToken, refreshToken));
     }
 
-    @ApiOperation(value = "애플 로그인")
-    @PostMapping("/auth/apple-login")
-    public BaseResponse<LoginRes> appleLogin(@RequestBody AppleLoginReq appleLoginReq) throws JsonProcessingException {
-        return new BaseResponse<>(authService.appleLogin1(appleLoginReq));
-    }
-
     // 애플 로그인 호출
     @RequestMapping(value = "/auth/getAppleAuthUrl")
     public @ResponseBody String getAppleAuthUrl(HttpServletRequest request) throws Exception {
@@ -117,9 +111,6 @@ public class AuthController {
 
             System.out.println(payload + "!!!!!!!!!!!!!!!!!!!!!!");
 
-//            String email = payload.getString("email");
-//            System.out.println("email + " + email + "!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
             //  회원 고유 식별자
             String appleUniqueNo = payload.getString("sub");
             System.out.println("appleUniqueNo + " + appleUniqueNo + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -128,8 +119,6 @@ public class AuthController {
             /**
              TO DO : 리턴받은 appleUniqueNo 해당하는 회원정보 조회 후 로그인 처리 후 메인으로 이동
              **/
-
-//            AppleLoginReq appleLoginReq = new AppleLoginReq(appleUniqueNo, email);
 
             return new BaseResponse<>(authService.appleLogin(appleUniqueNo));
 
