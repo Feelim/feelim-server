@@ -27,5 +27,4 @@
 ## 🛠 Tech Stack
 
 ## ⚙️ Architecture
-
-## 
+![architecture](https://user-images.githubusercontent.com/70634740/206380571-7bcaaab3-b4ac-4f26-be1a-937477c0b5f6.png)
