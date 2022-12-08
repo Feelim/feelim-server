@@ -48,3 +48,7 @@ https://user-images.githubusercontent.com/70634740/206471284-4e9e3758-cb78-4f5e-
 
 ## ⚙️ Architecture
 ![architecture](https://user-images.githubusercontent.com/70634740/206380571-7bcaaab3-b4ac-4f26-be1a-937477c0b5f6.png)
+
+## ERD
+
+![chalkak](https://user-images.githubusercontent.com/70634740/206471796-453b66c4-3f24-4321-a563-a1bc91f800c4.png)
