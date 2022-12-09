@@ -18,28 +18,14 @@
 
 |내 주변 현상소 찾기|
 |------|
-|
-![vllo](https://user-images.githubusercontent.com/70634740/206471033-03b26bd6-578b-4be1-b9c8-7e9f56b7a03e.gif)
-![vllo (1)](https://user-images.githubusercontent.com/70634740/206471071-74ba6592-208a-49fd-89b9-aeb19ab3ced7.gif)
-|
+|![vllo](https://user-images.githubusercontent.com/70634740/206471033-03b26bd6-578b-4be1-b9c8-7e9f56b7a03e.gif)
+![vllo (1)](https://user-images.githubusercontent.com/70634740/206471071-74ba6592-208a-49fd-89b9-aeb19ab3ced7.gif)|
 
 |커뮤니티|
 |------|
-|
-
-
-https://user-images.githubusercontent.com/70634740/206471235-d39f452f-e79a-4980-9b7f-300981de5613.MOV
-
-
-
-https://user-images.githubusercontent.com/70634740/206471266-bae90f15-0f34-4a4e-84f1-2421d13e6c4f.MOV
-
-
-
-https://user-images.githubusercontent.com/70634740/206471284-4e9e3758-cb78-4f5e-86f7-c2dbac97a809.mov
-
-
-|
+|![vllo](https://user-images.githubusercontent.com/70634740/206658618-3415e726-b8a6-4f1d-8ea3-cf19e8a030a9.gif)
+![vllo (1)](https://user-images.githubusercontent.com/70634740/206658655-d9b0a13e-864d-41dc-8454-891109c2eb03.gif)
+![vllo (2)](https://user-images.githubusercontent.com/70634740/206658659-4a007415-db82-4058-8424-ad0fe585d4bb.gif)|
 
 
 
