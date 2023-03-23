@@ -1,8 +1,6 @@
 # 📸 Chalkak
 **필카의 A to Z! 찰칵과 함께 필카를 더욱 쉽게 즐겨보세요.** <br>
 
-현재 서버를 잠시 내려둔 상태입니다.
-
 [📷 Download here](https://www.notion.so/Chalkak-076dc8dd85964a23bd073fa1a083e6fc) <br>
 
 
