@@ -78,7 +78,7 @@ public class LaboratoryService {
 
         //거리 추가
        for(GetLaboratoriesRes laboratory : getLaboratoriesRes) {
-           double distance = distanceService.getDistance(laboratory.getPoint(), x, y);
+           double distance = distanceService.getDistance(laboratory.getX(), laboratory.getY(), x, y);
            laboratory.setDistance(distance);
         }
 
@@ -100,7 +100,7 @@ public class LaboratoryService {
 
         //거리 추가
         for(GetLaboratoriesRes laboratory : getLaboratoriesRes) {
-            double distance = distanceService.getDistance(laboratory.getPoint(), x, y);
+            double distance = distanceService.getDistance(laboratory.getX(), laboratory.getY(), x, y);
             laboratory.setDistance(distance);
         }
 
