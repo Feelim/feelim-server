@@ -30,8 +30,6 @@ public class GetLaboratoriesRes implements Comparator<GetLaboratoriesRes> {
     private List<String> images = new ArrayList<>();
     private int reviewNum;
     private double star;
-    @JsonBackReference
-    private Point point;
 
     private Double x;
     private Double y;
@@ -41,7 +39,6 @@ public class GetLaboratoriesRes implements Comparator<GetLaboratoriesRes> {
         this.id = processingLaboratory.getId();
         this.name = processingLaboratory.getName();
         this.address = processingLaboratory.getAddress();
-        this.point = processingLaboratory.getPoint();
         this.reviewNum = processingLaboratory.getReviews().size();
         this.x = processingLaboratory.getPoint().getX();
         this.y = processingLaboratory.getPoint().getY();

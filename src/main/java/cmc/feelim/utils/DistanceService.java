@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 public class DistanceService {
 
 
-    public static double getDistance(Point laboratory, double x, double y) {
+    public static double getDistance(double laboratoryX, double laboratoryY, double x, double y) {
 
-        double theta = laboratory.getY() - y;
+        double theta = laboratoryY - y;
 
-        double dist = Math.sin(deg2rad(laboratory.getX())) * Math.sin(deg2rad(x)) + Math.cos(deg2rad(laboratory.getX())) * Math.cos(deg2rad(x)) * Math.cos(deg2rad(theta));
+        double dist = Math.sin(deg2rad(laboratoryX)) * Math.sin(deg2rad(x)) + Math.cos(deg2rad(laboratoryX)) * Math.cos(deg2rad(x)) * Math.cos(deg2rad(theta));
 
         dist = Math.acos(dist);
         dist = rad2deg(dist);

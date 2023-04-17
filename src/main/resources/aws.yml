@@ -1,0 +1,13 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    s3:
+      bucket: ${{ secrets.BUCKET }}
+      folder:
+        challenge: challenge/
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

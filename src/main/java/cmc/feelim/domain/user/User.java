@@ -68,7 +68,7 @@ public class User extends BaseEntity {
     @Column(length = 70, unique = true)
     private String appleUniqueNo;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
