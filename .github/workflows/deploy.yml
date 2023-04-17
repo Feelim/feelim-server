@@ -28,7 +28,7 @@ jobs:
 
       - name: Set yml
         - with:
-            - files: ./src/main/resources/application.yml, ./src/main/resources/application-oauth.yml, ./src/main/resources/aws.yml
+            - files: ./src/main/resources/application.yml
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
