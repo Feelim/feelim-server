@@ -32,8 +32,8 @@ jobs:
           files: ./src/main/resources/application.yml
         env:
           spring.datasource.url: ${{ secrets.RDS_URL }}
-          spring.datasource.username: ${{ secrets.AWS_RDS_USER }}
-          spring.datasource.password: ${{ secrets.AWS_RDS_PW }}
+          spring.datasource.username: ${{ secrets.DB_USER }}
+          spring.datasource.password: ${{ secrets.DB_PWD }}
           spring.cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
           spring.cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           spring.cloud.aws.s3.bucket: ${{ secrets.BUCKET }}
