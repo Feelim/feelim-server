@@ -78,5 +78,6 @@ jobs:
           application_name: chalkak
           environment_name: Chalkak-env
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          use_existing_version_if_available: true
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip
