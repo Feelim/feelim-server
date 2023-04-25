@@ -26,9 +26,21 @@ jobs:
         with:
           java-version: '11'
 
-      - name: Set yml
-        - with:
-            - files: ./src/main/resources/application.yml, ./src/main/resources/application-oauth.yml, ./src/main/resources/aws.yml
+      - name: Set Yaml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application.yml
+        env:
+          spring.datasource.url: ${{ secrets.RDS_URL }}
+          spring.datasource.username: ${{ secrets.DB_USER }}
+          spring.datasource.password: ${{ secrets.DB_PWD }}
+          spring.cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          spring.cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          spring.cloud.aws.s3.bucket: ${{ secrets.BUCKET }}
+          spring.security.oauth2.client.registration.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
+          spring.security.oauth2.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          spring.security.oauth2.client.registratin.naver.clinet-id: ${{ secrets.NAVER_CLIENT_ID }}
+          spring.security.oauth2.client.registratin.naver.clinet-secret: ${{ secrets.NAVER_CLIENT_SECRET }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -59,12 +71,13 @@ jobs:
           cd deploy && zip -r deploy.zip .
 
       - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v20
+        uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: chalkak
-          environment_name: Chalkak-env-1
+          environment_name: Chalkak-env
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          use_existing_version_if_available: true
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip

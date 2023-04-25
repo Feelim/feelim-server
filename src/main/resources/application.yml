@@ -7,12 +7,12 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   profiles:
-    include: oauth
+    include: oauth, aws
 
   datasource:
     url: ${{ secrets.RDS_URL }}
-    username: ${{ secrets.AWS_RDS_USER }}
-    password: ${{ secrets.AWS_RDS_PW }}
+    username: ${{ secrets.DB_USER }}
+    password: ${{ secrets.DB_PWD }}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   mvc:
