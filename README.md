@@ -33,4 +33,5 @@
 
 ## ERD
 
-![chalkak](https://user-images.githubusercontent.com/70634740/206471796-453b66c4-3f24-4321-a563-a1bc91f800c4.png)
+<img width="700" alt="image" src="https://user-images.githubusercontent.com/70634740/235300689-7897adaa-f294-4a7c-84f1-f3b484cb395f.png">
+
