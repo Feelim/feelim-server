@@ -11,8 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class MainController {
+//    @ApiOperation("health check")
+//    @GetMapping("/")
+//    public BaseResponse<String> main() throws BaseException {
+//        return new BaseResponse<>("health check OK!");
+//    }
+
     @ApiOperation("health check")
-    @GetMapping("/")
+    @GetMapping("/health")
     public BaseResponse<String> checkHealth() throws BaseException {
         return new BaseResponse<>("health check OK!");
     }
