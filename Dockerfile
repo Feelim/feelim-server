@@ -1,7 +1,9 @@
 FROM openjdk:8-jdk-slim-buster
 
-WORKDIR /app
+CMD ["./gradlew", "clean", "build"]
 
-COPY build/libs/feelim-0.0.1-SNAPSHOT.jar app.jar
+ARG JAR_FILE_PATH=build/libs/feelim-0.0.1-SNAPSHOT.jar
 
-CMD ["java", "-jar", "app.jar"]
+COPY ${JAR_FILE_PATH} app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

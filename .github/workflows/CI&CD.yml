@@ -45,34 +45,42 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name : Build Docker Image & Push to Docker Hub
+      - name: Docker build
         run: |
-          docker build . -t ${{ secrets.DOCKERHUB_USERNAME }}/docker-springboot
-          docker build ./nginx -t ${{ secrets.DOCKERHUB_USERNAME }}/docker-nginx
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-springboot
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-nginx
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker build -t chalkak .
+          docker tag chalkak mina5814/chalkak:latest
+          docker push mina5814/chalkak:latest
           
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
+      - name: Get timestamp
+        uses: gerred/actions/current-time@master
         id: current-time
-        with:
-          format: YYYY-MM-DDTHH-mm-ss
-          utcOffset: "+09:00"
 
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v18
+      - name: Run string replace
+        uses: frabert/replace-string-action@master
+        id: format-time
+          with:
+            pattern: '[:\.]+'
+            string: "${{ steps.current-time.outputs.time }}"
+            replace-with: '-'
+            flags: 'g'
+
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ${{ secrets.EB_APPLICATION }}
           environment_name: ${{ secrets.EB_ENVIRONMENT }}
-          version_label: deploy-${{steps.current-time.outputs.formattedTime}}
+          version_label: "github-action--${{ steps.format-time.outputs.replaced }}"
           region: ap-northeast-2
-          deployment_package: docker-compose.yml
-          wait_for_environment_recovery: 180
+          deployment_package: Dockerrun.aws.json
+
+
+
+
+
+
+
+
+
