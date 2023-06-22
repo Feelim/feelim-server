@@ -27,8 +27,11 @@ import org.springframework.stereotype.Component;
 import net.sf.json.JSONObject;
 
 import java.io.*;
-import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.ECPrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.*;
 
 @Slf4j
@@ -37,7 +40,7 @@ public class AppleLoginUtil {
     private static final Logger logger = LoggerFactory.getLogger(AppleLoginUtil.class);
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    public static String createClientSecret(String teamId, String clientId, String keyId, String keyPath, String authUrl) {
+    public static String createClientSecret(String teamId, String clientId, String keyId, String keyPath, String authUrl) throws IOException, NoSuchAlgorithmException {
 
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.ES256).keyID(keyId).build();
         JWTClaimsSet claimsSet = new JWTClaimsSet();
@@ -51,18 +54,16 @@ public class AppleLoginUtil {
 
         SignedJWT jwt = new SignedJWT(header, claimsSet);
 
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(readPrivateKey(keyPath));
+        KeyFactory kf = KeyFactory.getInstance("EC");
+
         try {
-            ECPrivateKey ecPrivateKey = new ECPrivateKeyImpl(readPrivateKey(keyPath));
-//            ECPrivateKey ecPrivateKey1 = new ECPrivateKeyImpl(keyPath);
+            ECPrivateKey ecPrivateKey = (ECPrivateKey) kf.generatePrivate(spec);
             JWSSigner jwsSigner = new ECDSASigner(ecPrivateKey.getS());
-
             jwt.sign(jwsSigner);
-
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException(e);
         } catch (JOSEException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
