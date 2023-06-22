@@ -26,10 +26,6 @@ jobs:
           echo "${{ secrets.APPLICATION_AWS_YML }}" >> application-aws.yml
           echo "${{ secrets.APPLICATION_OAUTH_YML }}" >> application-oauth.yml
           
-          mkdir firebase
-          touch ./firebase/firebase_service_key.json
-          echo "${{ secrets.FIREBASE_SERVICE_KEY_JSON }}" >> ./firebase/firebase_service_key.json
-          sed -i 's/#/"/g' ./firebase/firebase_service_key.json
         shell: bash
 
       - name: Set up JDK 11
