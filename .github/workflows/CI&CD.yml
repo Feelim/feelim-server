@@ -18,9 +18,11 @@ jobs:
 
       - name: Create yml files
         run: |
+          echo ${{ github.workspace }}
           rm -r ./src/main/resources
           mkdir ./src/main/resources
           cd ./src/main/resources
+          echo ${{ github.workspace }}
           touch application.yml
           touch application-aws.yml
           touch application-oauth.yml
@@ -31,8 +33,7 @@ jobs:
           mkdir apple
           touch ./apple/AuthKey_54D9T8FD9F.p8
           echo "${{ secrets.APPLE_AUTH_KEY }}" >> ./apple/AuthKey_54D9T8FD9F.p8
-          sed -i 's/#/"/g' ./apple/AuthKey_54D9T8FD9F.p8
-           cd ../../../        
+          sed -i 's/#/"/g' ./apple/AuthKey_54D9T8FD9F.p8      
 
         shell: bash
 
