@@ -32,7 +32,8 @@ jobs:
           touch ./apple/AuthKey_54D9T8FD9F.p8
           echo "${{ secrets.APPLE_AUTH_KEY }}" >> ./apple/AuthKey_54D9T8FD9F.p8
           sed -i 's/#/"/g' ./apple/AuthKey_54D9T8FD9F.p8
-          
+           cd ../../../        
+
         shell: bash
 
       - name: Set up JDK 11
