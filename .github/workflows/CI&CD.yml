@@ -18,7 +18,7 @@ jobs:
 
       - name: Create yml files
         run: |
-          cd ./src/main/resources
+          cd /src/main/resources
           touch application.yml
           touch application-aws.yml
           touch application-oauth.yml
