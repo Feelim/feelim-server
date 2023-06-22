@@ -19,8 +19,8 @@ jobs:
       - name: Create yml files
         run: |
           echo ${{ github.workspace }}
-          rm -r ./src/main/resources
-#          mkdir ./src/main/resources
+#          rm -r ./src/main/resources
+          mkdir ./src/main/resources
 #          cd ./src/main/resources
 #          touch application.yml
 #          touch application-aws.yml
