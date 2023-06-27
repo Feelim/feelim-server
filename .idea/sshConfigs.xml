@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="ec2-3-36-127-163.ap-northeast-2.compute.amazonaws.com" id="91bea505-8738-420d-a9f0-2c297f6ff329" keyPath="$USER_HOME$/Downloads/chalkak.pem" port="22" nameFormat="DESCRIPTIVE" username="ec2-user" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>
